@@ -4,6 +4,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import HeartRateChart from "../components/HeartRate/HeartRate";
 import Timer from "../components/Timer/Timer";
+import PlayersTab from "../components/PlayersTab/PlayersTab";
+import playersData from '../assets/json/players.json';
+import { TPlayer } from "../components/PlayersTab/PlayersTab.types";
 
 const Dashboard = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -46,34 +49,39 @@ const Dashboard = () => {
   const [zoneTimers, setZoneTimers] = useState([0, 0, 0, 0, 0]);
 
   return (
-    <section
-      id="dashboard-section"
-      className="flex justify-center items-center"
-    >
-      <Timer
-        isTimerRunning={isTimerRunning}
-        setIsTimerRunning={setIsTimerRunning}
-        timer={timer}
-        setTimer={setTimer}
-        handleStart={handleStart}
-        handlePause={handlePause}
-        handleStop={handleStop}
-      />
-      <HeartRateChart
-        restingHeartRate={70}
-        maxHeartRate={200}
-        isTimerRunning={isTimerRunning}
-        currentHeartRate={currentHeartRate}
-        setCurrentHearRate={setCurrentHearRate}
-        currentHeartRateZone={currentHeartRateZone}
-        setCurrentHeartRateZone={setCurrentHeartRateZone}
-        currentHeartRateData={currentHeartRateData}
-        setcurrentHeartRateData={setcurrentHeartRateData}
-        currentAvgHeartRate={currentAvgHeartRate}
-        setCurrentAvgHeartRate={setCurrentAvgHeartRate}
-        zoneTimers={zoneTimers}
-        setZoneTimers={setZoneTimers}
-      />
+    <section className="flex flex-col gap-5 p-5">
+      <section>
+        <PlayersTab players={playersData.soccerTeamPlayers as TPlayer[]} />
+      </section>
+      <section
+        id="dashboard-section"
+        className="flex justify-center items-center"
+      >
+        <Timer
+          isTimerRunning={isTimerRunning}
+          setIsTimerRunning={setIsTimerRunning}
+          timer={timer}
+          setTimer={setTimer}
+          handleStart={handleStart}
+          handlePause={handlePause}
+          handleStop={handleStop}
+        />
+        <HeartRateChart
+          restingHeartRate={70}
+          maxHeartRate={200}
+          isTimerRunning={isTimerRunning}
+          currentHeartRate={currentHeartRate}
+          setCurrentHearRate={setCurrentHearRate}
+          currentHeartRateZone={currentHeartRateZone}
+          setCurrentHeartRateZone={setCurrentHeartRateZone}
+          currentHeartRateData={currentHeartRateData}
+          setcurrentHeartRateData={setcurrentHeartRateData}
+          currentAvgHeartRate={currentAvgHeartRate}
+          setCurrentAvgHeartRate={setCurrentAvgHeartRate}
+          zoneTimers={zoneTimers}
+          setZoneTimers={setZoneTimers}
+        />
+      </section>
     </section>
   );
 };

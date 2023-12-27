@@ -1,0 +1,15 @@
+{
+  "soccerTeamPlayers": [
+    { "number": 1, "name": "Trubin" },
+    { "number": 14, "name": "J. Bernat" },
+    { "number": 30, "name": "Otamendi" },
+    { "number": 4, "name": "António S." },
+    { "number": 6, "name": "Bah" },
+    { "number": 61, "name": "Florentino" },
+    { "number": 87, "name": "João Neves" },
+    { "number": 10, "name": "Kökcü" },
+    { "number": 8, "name": "Aursnes" },
+    { "number": 7, "name": "Neres" },
+    { "number": 33, "name": "Musa" }
+  ]
+}
