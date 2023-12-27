@@ -7,6 +7,8 @@ interface HeartRateChartProps {
   setcurrentHeartRateData: (updateFunction: (prevData: number[]) => number[]) => void;
   currentAvgHeartRate: number;
   setCurrentAvgHeartRate: (newAvgHeartRate: number) => void;
+  zoneTimers: number[];
+  setZoneTimers: (updateFunction: (prevTimers: number[]) => number[]) => void;
   restingHeartRate: number;
   maxHeartRate: number;
   isTimerRunning: boolean;

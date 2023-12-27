@@ -33,13 +33,17 @@ const Dashboard = () => {
     setCurrentHeartRateZone("");
     setcurrentHeartRateData([]);
     setCurrentAvgHeartRate(0);
+    setZoneTimers([0, 0, 0, 0, 0]);
   };
 
   // Heart rate controllers
   const [currentHeartRate, setCurrentHearRate] = useState<number>(0);
   const [currentHeartRateZone, setCurrentHeartRateZone] = useState<string>("");
-  const [currentHeartRateData, setcurrentHeartRateData] = useState<number[]>([]);
+  const [currentHeartRateData, setcurrentHeartRateData] = useState<number[]>(
+    []
+  );
   const [currentAvgHeartRate, setCurrentAvgHeartRate] = useState<number>(0);
+  const [zoneTimers, setZoneTimers] = useState([0, 0, 0, 0, 0]);
 
   return (
     <section
@@ -58,16 +62,18 @@ const Dashboard = () => {
       <HeartRateChart
         restingHeartRate={70}
         maxHeartRate={200}
-        isTimerRunning={isTimerRunning} 
-        currentHeartRate={currentHeartRate} 
-        setCurrentHearRate={setCurrentHearRate} 
-        currentHeartRateZone={currentHeartRateZone} 
-        setCurrentHeartRateZone={setCurrentHeartRateZone} 
-        currentHeartRateData={currentHeartRateData} 
-        setcurrentHeartRateData={setcurrentHeartRateData} 
-        currentAvgHeartRate={currentAvgHeartRate} 
+        isTimerRunning={isTimerRunning}
+        currentHeartRate={currentHeartRate}
+        setCurrentHearRate={setCurrentHearRate}
+        currentHeartRateZone={currentHeartRateZone}
+        setCurrentHeartRateZone={setCurrentHeartRateZone}
+        currentHeartRateData={currentHeartRateData}
+        setcurrentHeartRateData={setcurrentHeartRateData}
+        currentAvgHeartRate={currentAvgHeartRate}
         setCurrentAvgHeartRate={setCurrentAvgHeartRate}
-        />
+        zoneTimers={zoneTimers}
+        setZoneTimers={setZoneTimers}
+      />
     </section>
   );
 };

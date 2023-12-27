@@ -13,18 +13,45 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
   restingHeartRate,
   maxHeartRate,
   isTimerRunning,
+  zoneTimers,
+  setZoneTimers,
 }) => {
   const setZoneColor = (newHeartRate: number) => {
     if (newHeartRate < 135) {
       setCurrentHeartRateZone("blue"); // Zone 1
+      setZoneTimers((prevTimers: number[]) => {
+        const updatedTimers: number[] = [...prevTimers];
+        updatedTimers[0] += 1;
+        return updatedTimers;
+      });
     } else if (newHeartRate >= 136 && newHeartRate <= 149) {
       setCurrentHeartRateZone("teal"); // Zone 2
+      setZoneTimers((prevTimers: number[]) => {
+        const updatedTimers: number[] = [...prevTimers];
+        updatedTimers[1] += 1;
+        return updatedTimers;
+      });
     } else if (newHeartRate >= 150 && newHeartRate <= 163) {
       setCurrentHeartRateZone("green"); // Zone 3
+      setZoneTimers((prevTimers: number[]) => {
+        const updatedTimers: number[] = [...prevTimers];
+        updatedTimers[2] += 1;
+        return updatedTimers;
+      });
     } else if (newHeartRate >= 164 && newHeartRate <= 176) {
       setCurrentHeartRateZone("orange"); // Zone 4
+      setZoneTimers((prevTimers: number[]) => {
+        const updatedTimers: number[] = [...prevTimers];
+        updatedTimers[3] += 1;
+        return updatedTimers;
+      });
     } else {
       setCurrentHeartRateZone("red"); // Zone 5
+      setZoneTimers((prevTimers: number[]) => {
+        const updatedTimers: number[] = [...prevTimers];
+        updatedTimers[4] += 1;
+        return updatedTimers;
+      });
     }
   };
 
@@ -48,7 +75,10 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
       setCurrentHearRate(newHeartRate);
 
       // Update heartRateData using the setHeartRateData function
-      setcurrentHeartRateData((prevData: number[]) => [...prevData, Math.round(newHeartRate)]);
+      setcurrentHeartRateData((prevData: number[]) => [
+        ...prevData,
+        Math.round(newHeartRate),
+      ]);
       calculateHeartRateAvg();
     } catch (error) {
       console.error("Error in simulateHeartRate:", error);
@@ -64,11 +94,19 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
     }
   };
 
+  const formatTime = (seconds: number): string => {
+    const formattedMinutes = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const formattedSeconds = (seconds % 60).toString().padStart(2, "0");
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+  
+
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
     if (isTimerRunning) {
-      intervalId = setInterval(simulateHeartRate, 2000); // Update every 2 seconds
+      intervalId = setInterval(simulateHeartRate, 1000); // Update every second
     }
 
     return () => {
@@ -185,7 +223,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-spc_blue-50">Zone 1</span>
             <div className="w-[9px] h-[9px] bg-spc_blue-50 rounded-full"></div>
-            <span>02:05</span>
+            <span>{formatTime(zoneTimers[0])}</span>
           </div>
           <span>&#60;135BPM</span>
         </div>
@@ -193,7 +231,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-spc_teal-50">Zone 2</span>
             <div className="w-[9px] h-[9px] bg-spc_teal-50 rounded-full"></div>
-            <span>01:23</span>
+            <span>{formatTime(zoneTimers[1])}</span>
           </div>
           <span>136-149BPM</span>
         </div>
@@ -201,7 +239,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-spc_green-50">Zone 3</span>
             <div className="w-[9px] h-[9px] bg-spc_green-50 rounded-full"></div>
-            <span>04:54</span>
+            <span>{formatTime(zoneTimers[2])}</span>
           </div>
           <span>150-163BPM</span>
         </div>
@@ -209,7 +247,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-spc_orange-50">Zone 4</span>
             <div className="w-[9px] h-[9px] bg-spc_orange-50 rounded-full"></div>
-            <span>07:36</span>
+            <span>{formatTime(zoneTimers[3])}</span>
           </div>
           <span>164-176BPM</span>
         </div>
@@ -217,7 +255,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-spc_red-50">Zone 5</span>
             <div className="w-[9px] h-[9px] bg-spc_red-50 rounded-full"></div>
-            <span>02:29</span>
+            <span>{formatTime(zoneTimers[4])}</span>
           </div>
           <span>177+BPM</span>
         </div>
