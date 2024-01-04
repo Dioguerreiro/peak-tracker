@@ -1,4 +1,4 @@
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import {
   signInWithPopup,
   signInWithEmailAndPassword as signInWithEmailAndPasswordBase,
@@ -70,6 +70,26 @@ export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   }
 };
 
-export const logout = (): void => {
+export const signOut = (): void => {
   signOutBase(auth);
 };
+
+const isUserLoggedIn = async (): Promise<boolean> => {
+  let isLoggedIn = false;
+
+  // Create a promise to handle the asynchronous nature of onAuthStateChanged
+  const checkUser = new Promise<void>((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // If a user is present, the user is logged in
+      isLoggedIn = !!user;
+      // Unsubscribe to avoid memory leaks
+      unsubscribe();
+      // Resolve the promise
+      resolve();
+    });
+  });
+
+  // Wait for the promise to be resolved and return the result
+  await checkUser;
+  return isLoggedIn;
+}

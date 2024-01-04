@@ -1,9 +1,8 @@
-// src/App.js (or .tsx for TypeScript)
-
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import DashboardPlay from './pages/DashboardPlay';
+import DashboardTeam from './pages/DashboardTeam';
 
 
 const App = () => {
@@ -11,7 +10,10 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="dashboard">
+          <Route path='/dashboard/play' element={<DashboardPlay/>}/>
+          <Route path='/dashboard/team' element={<DashboardTeam/>}/>
+        </Route>
       </Routes>
     </Router>
   );

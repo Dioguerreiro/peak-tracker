@@ -13,7 +13,7 @@ const Login = () => {
   const handleSignInWithEmailAndPassword = async () => {
     const hasError = await signInWithEmailAndPassword(email, password);
     if (!hasError) {
-      navigate('/dashboard');
+      navigate('/dashboard/play');
     }
    
   };

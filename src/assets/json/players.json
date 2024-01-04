@@ -1,15 +1,71 @@
 {
+  "positionZones": ["GK", "B", "M", "A"],
   "soccerTeamPlayers": [
-    { "number": 1, "name": "Trubin" },
-    { "number": 14, "name": "J. Bernat" },
-    { "number": 30, "name": "Otamendi" },
-    { "number": 4, "name": "António S." },
-    { "number": 6, "name": "Bah" },
-    { "number": 61, "name": "Florentino" },
-    { "number": 87, "name": "João Neves" },
-    { "number": 10, "name": "Kökcü" },
-    { "number": 8, "name": "Aursnes" },
-    { "number": 7, "name": "Neres" },
-    { "number": 33, "name": "Musa" }
+    {
+      "number": 1,
+      "name": "Trubin",
+      "position": "GK",
+      "positionZone": "GK"
+    },
+    {
+      "number": 14,
+      "name": "J. Bernat",
+      "position": "LB",
+      "positionZone": "B"
+    },
+    {
+      "number": 30,
+      "name": "Otamendi",
+      "position": "CB",
+      "positionZone": "B"
+    },
+    {
+      "number": 4,
+      "name": "António S.",
+      "position": "CB",
+      "positionZone": "B"
+    },
+    {
+      "number": 6,
+      "name": "Bah",
+      "position": "RB",
+      "positionZone": "B"
+    },
+    {
+      "number": 61,
+      "name": "Florentino",
+      "position": "CDM",
+      "positionZone": "M"
+    },
+    {
+      "number": 87,
+      "name": "João Neves",
+      "position": "CM",
+      "positionZone": "M"
+    },
+    {
+      "number": 10,
+      "name": "Kökcü",
+      "position": "CM",
+      "positionZone": "M"
+    },
+    {
+      "number": 8,
+      "name": "Aursnes",
+      "position": "RM",
+      "positionZone": "M"
+    },
+    {
+      "number": 7,
+      "name": "Neres",
+      "position": "LM",
+      "positionZone": "M"
+    },
+    {
+      "number": 33,
+      "name": "Musa",
+      "position": "ST",
+      "positionZone": "A"
+    }
   ]
 }
