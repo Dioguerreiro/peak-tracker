@@ -1,7 +1,16 @@
-import React, { ReactNode, FC } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../../assets/logo/logo.png";
 import { signOut } from "../../authHelpers";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  faGrid2,
+  faUsers,
+  faPlay,
+  faCalendar,
+  faComments,
+  faGear,
+  faRightFromBracket,
+} from "@fortawesome/pro-solid-svg-icons";
 
 const DashboardMenu = () => {
   const navigate = useNavigate();
@@ -17,15 +26,57 @@ const DashboardMenu = () => {
         <img src={logo} alt="logo" className="h-11" />
       </div>
       <div className="flex gap-14 justify-center items-center">
-        <Link to="/dashboard/play">Home</Link>
-        <a href="/dashboard/team">Team</a>
-        <a href="/">Videos</a>
-        <a href="/">Calendar</a>
-        <a href="/">Chat</a>
-        <a href="/">Settings</a>
+        <NavLink
+          to="/dashboard/play"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faGrid2} className="text-4xl"/>
+        </NavLink>
+        <NavLink
+          to="/dashboard/team"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faUsers} className="text-4xl"/>
+        </NavLink>
+        <NavLink
+          to="/dashboard/videos"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faPlay} className="text-4xl"/>
+        </NavLink>
+        <NavLink
+          to="/dashboard/calendar"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faCalendar} className="text-4xl"/>
+        </NavLink>
+        <NavLink
+          to="/dashboard/chat"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faComments} className="text-4xl"/>
+        </NavLink>
+        <NavLink
+          to="/dashboard/settings"
+          className={({ isActive }) =>
+            isActive ? "text-white" : "text-neutral-400"
+          }
+        >
+          <FontAwesomeIcon icon={faGear} className="text-4xl"/>
+        </NavLink>
       </div>
       <div>
-        <button onClick={handleSignOut}>Logout</button>
+        <button onClick={handleSignOut}><FontAwesomeIcon icon={faRightFromBracket} className="text-4xl text-white"/></button>
       </div>
     </nav>
   );

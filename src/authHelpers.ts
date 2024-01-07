@@ -6,7 +6,14 @@ import {
   sendPasswordResetEmail as sendPasswordResetEmailBase,
   signOut as signOutBase,
 } from "firebase/auth";
-import { getFirestore, query, getDocs, collection, where, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+} from "firebase/firestore";
 import { auth } from "./firebase";
 
 const app = auth.app;
@@ -33,7 +40,10 @@ export const signInWithGoogle = async (): Promise<void> => {
   }
 };
 
-export const signInWithEmailAndPassword = async (email: string, password: string): Promise<string | null> => {
+export const signInWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<string | null> => {
   try {
     await signInWithEmailAndPasswordBase(auth, email, password);
     return null;
@@ -44,19 +54,25 @@ export const signInWithEmailAndPassword = async (email: string, password: string
   }
 };
 
-export const registerWithEmailAndPassword = async (name: string, email: string, password: string): Promise<void> => {
+export const registerWithEmailAndPassword = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<string | null> => {
   try {
     const res = await createUserWithEmailAndPasswordBase(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "users"), {
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email,
-    });
+    // await addDoc(collection(db, "users"), {
+    //   uid: user.uid,
+    //   name,
+    //   authProvider: "local",
+    //   email,
+    // });
+    return null;
   } catch (err: any) {
     console.error(err);
     alert(err.message);
+    return err.message;
   }
 };
 
@@ -92,4 +108,4 @@ const isUserLoggedIn = async (): Promise<boolean> => {
   // Wait for the promise to be resolved and return the result
   await checkUser;
   return isLoggedIn;
-}
+};

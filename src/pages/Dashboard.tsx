@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import DashboardLayout from "../layout/DashboardLayout";
-import DashboardPlay from "./DashboardPlay";
+import DashboardPlay from "./DashboardHome";
 import useAuthRedirect from "../misc/useAuthRedirect";
 
 const Dashboard = () => {
