@@ -1,8 +1,21 @@
-import React, { useEffect } from 'react';
-import TimerProps from './Timer.types';
+import React, { useEffect } from "react";
+import TimerProps from "./Timer.types";
+import {
+  faPlayCircle,
+  faPauseCircle,
+  faStopCircle,
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Timer: React.FC<TimerProps> = ({timer, setTimer, isTimerRunning, setIsTimerRunning, handleStart, handlePause, handleStop}) => {
-
+const Timer: React.FC<TimerProps> = ({
+  timer,
+  setTimer,
+  isTimerRunning,
+  setIsTimerRunning,
+  handleStart,
+  handlePause,
+  handleStop,
+}) => {
   useEffect(() => {
     let intervalId: any;
 
@@ -16,18 +29,29 @@ const Timer: React.FC<TimerProps> = ({timer, setTimer, isTimerRunning, setIsTime
   }, [isTimerRunning, timer]);
 
   // Format the timer for display
-  const formattedTime = new Date(timer * 1000).toISOString().slice(14, 19);
+  const hours = Math.floor(timer / 3600);
+  const minutes = Math.floor((timer % 3600) / 60);
+  const seconds = timer % 60;
+
+  const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
   return (
-    <div>
-      <h2>Timer: {formattedTime}</h2>
-      <button onClick={handleStart} disabled={isTimerRunning}>
-        Start
+    <div className="bg-white flex items-center justify-center rounded-xl p-2 gap-2 w-fit">
+      {isTimerRunning ? (
+        <button onClick={handlePause}>
+          <FontAwesomeIcon icon={faPauseCircle} className="text-4xl" />
+        </button>
+      ) : (
+        <button onClick={handleStart} disabled={isTimerRunning}>
+          <FontAwesomeIcon icon={faPlayCircle} className="text-4xl" />
+        </button>
+      )}
+      <button onClick={handleStop}>
+        <FontAwesomeIcon icon={faStopCircle} className="text-4xl" />
       </button>
-      <button onClick={handlePause} disabled={!isTimerRunning}>
-        Pause
-      </button>
-      <button onClick={handleStop}>Stop</button>
+      <h2>{formattedTime}</h2>
     </div>
   );
 };

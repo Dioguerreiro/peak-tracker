@@ -7,13 +7,15 @@ import DashboardCalendar from "./pages/DashboardCalendar";
 import DashboardVideos from "./pages/DashboardVideos";
 import DashboardChat from "./pages/DashboardChat";
 import DashboardSettings from "./pages/DashboardSettings";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signin />} />
+        <Route path="/resetpassword" element={<ForgotPassword />} />
         <Route path="dashboard">
           <Route path="/dashboard/play" element={<DashboardPlay />} />
           <Route path="/dashboard/team" element={<DashboardTeam />} />

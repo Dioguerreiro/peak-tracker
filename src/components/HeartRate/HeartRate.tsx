@@ -121,7 +121,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
   ]);
 
   return (
-    <div className="bg-white rounded-md p-10 flex flex-col gap-7">
+    <div className="bg-white rounded-xl p-10 flex flex-col gap-7">
       <h1 className="text-3xl font-bold">Heart Rate</h1>
       <div className="flex flex-col gap-2">
         <div className="flex rounded overflow-hidden">

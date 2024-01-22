@@ -20,23 +20,25 @@ const app = auth.app;
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoogle = async (): Promise<void> => {
+export const signInWithGoogle = async (): Promise<string | null> => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, "users"), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
-        email: user.email,
-      });
-    }
+    // if (docs.docs.length === 0) {
+    //   await addDoc(collection(db, "users"), {
+    //     uid: user.uid,
+    //     name: user.displayName,
+    //     authProvider: "google",
+    //     email: user.email,
+    //   });
+    // }
+    return null;
   } catch (err: any) {
     console.error(err);
     alert(err.message);
+    return err.message;
   }
 };
 

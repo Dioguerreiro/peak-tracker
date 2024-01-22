@@ -5,6 +5,8 @@ export type TPlayer = {
 
 interface PlayersTabProps {
   players: TPlayer[];
+  selectedPlayer: number | null;
+  setSelectedPlayer: (player: number) => void;
 }
 
 export default PlayersTabProps;

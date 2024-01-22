@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import appleLogo from "../assets/svg/apple-logo.svg";
 import googleLogo from "../assets/svg/google_logo.svg";
-import { signInWithEmailAndPassword } from "../authHelpers";
+import { signInWithEmailAndPassword, signInWithGoogle } from "../authHelpers";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/logo/logoNew.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,6 +18,13 @@ const Login = () => {
     }
   };
 
+  const handleSignInWithGoogle = async () => {
+    const hasError = await signInWithGoogle();
+    if (!hasError) {
+      navigate("/dashboard/play");
+    }
+  };
+
   return (
     <section
       id="login-container"
@@ -24,13 +32,19 @@ const Login = () => {
     >
       <div className="flex justify-center items-center w-[556px] bg-white rounded-3xl p-10">
         <div className="flex flex-col gap-5 w-full">
+          <div className="flex justify-center items-center">
+            <img src={logo} alt="logo" className="h-16 rounded-xl" />
+          </div>
           <div className="flex flex-col">
             <h3 className=" text-3xl font-semibold text-center">
               Sign in to your account
             </h3>
           </div>
           <div className="flex gap-3">
-            <button className="bg-neutral-100 text-neutral-800 px-3 py-4 rounded-xl w-full flex gap-3 items-center">
+            <button
+              className="bg-neutral-100 text-neutral-800 px-3 py-4 rounded-xl w-full flex gap-3 items-center"
+              onClick={handleSignInWithGoogle}
+            >
               <img className="h-5" src={googleLogo} alt="google-logo" />
               Sign in with Google
             </button>
@@ -88,9 +102,12 @@ const Login = () => {
                 Remember on this device
               </label>
             </div>
-            <a className="text-neutral-800 underline text-sm" href="/">
+            <Link
+              className="text-neutral-800 underline text-sm"
+              to="/resetpassword"
+            >
               Forgot password?
-            </a>
+            </Link>
           </div>
           <button
             className="w-full bg-neutral-800 text-white font-medium px-3 py-4 rounded-xl hover:bg-neutral-900"
@@ -100,9 +117,9 @@ const Login = () => {
           </button>
           <p className="text-neutral-500 text-center">
             Not a member?{" "}
-            <a className="text-neutral-800 underline" href="/signin">
+            <Link className="text-neutral-800 underline" to="/signup">
               Start a 14-day free trial!
-            </a>
+            </Link>
           </p>
         </div>
       </div>

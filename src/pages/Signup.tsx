@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   registerWithEmailAndPassword,
-  signInWithEmailAndPassword,
 } from "../authHelpers";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/logo/logoNew.png";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -24,7 +24,11 @@ const Signup = () => {
 
   const handleSignInWithEmailAndPassword = async () => {
     if (!arePasswordsEqual()) {
-      const hasError = await registerWithEmailAndPassword(name, email, password);
+      const hasError = await registerWithEmailAndPassword(
+        name,
+        email,
+        password
+      );
       if (!hasError) {
         navigate("/dashboard/play");
       }
@@ -38,6 +42,9 @@ const Signup = () => {
     >
       <div className="flex justify-center items-center w-[556px] bg-white rounded-3xl p-10">
         <div className="flex flex-col gap-5 w-full">
+          <div className="flex justify-center items-center">
+            <img src={logo} alt="logo" className="h-16 rounded-xl" />
+          </div>
           <div className="flex flex-col">
             <h3 className=" text-3xl font-semibold text-center">Sign up</h3>
           </div>
@@ -101,6 +108,12 @@ const Signup = () => {
           >
             Sign Up
           </button>
+          <p className="text-neutral-500 text-center">
+            Already have an account?{" "}
+            <Link className="text-neutral-800 underline" to="/">
+              Go back to login
+            </Link>
+          </p>
         </div>
       </div>
     </section>
