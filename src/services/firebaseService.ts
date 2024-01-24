@@ -1,11 +1,14 @@
+import PlayerProps from "../components/DashboardAddNewPlayer/DashboardAddNewPlayer.types";
 import { auth, firestore } from "./firebase";
 import {
   addDoc,
   collection,
   doc,
   getDoc,
-  setDoc,
+  getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 // Function to create a team for the logged-in user
@@ -36,48 +39,63 @@ export const createTeam = async (teamName: string): Promise<string | null> => {
   }
 };
 
-// Define an interface for user data
-interface UserData {
-  teamId?: string;
-}
-
 export const addPlayerToTeam = async (
-  playerName: string,
-  position: string
+  playerInfo: PlayerProps
 ): Promise<string | null> => {
   try {
     // Get the currently logged-in user
     const user = auth.currentUser;
 
-    // Check if the user has a team
-    if (!user || !user.uid || !user.metadata.creationTime) {
+    // Check if the user is authenticated
+    if (!user || !user.uid) {
+      return "User not authenticated.";
+    }
+
+    // Query teams where userId is equal to the user's UID
+    const teamsQuery = query(
+      collection(firestore, "teams"),
+      where("userId", "==", user.uid)
+    );
+
+    // Get teams matching the query
+    const teamsSnapshot = await getDocs(teamsQuery);
+
+    // Check if any team was found
+    if (teamsSnapshot.empty) {
       return "User does not have a team.";
     }
 
-    // Check if the user has a team ID
-    const userDocRef = doc(firestore, "users", user.uid);
-    const userDocSnap = await getDoc(userDocRef);
+    // Assuming the user has only one team, get the first team
+    const teamDoc = teamsSnapshot.docs[0];
 
-    // Ensure that the user document exists and has a valid type
-    if (!userDocSnap.exists()) {
-      return "User document not found or invalid type.";
-    }
+    // Get the team ID from the team document
+    const teamId = teamDoc.id;
 
-    // Access the user data with the specified type
-    const userData: UserData = userDocSnap.data();
-
-    // Get the team ID from the user data
-    const teamId = userData.teamId;
-
-    if (!teamId) {
-      return "User does not have a team.";
-    }
-
-    // Create a player document in the 'players' subcollection under the user's team
-    await addDoc(collection(firestore, `teams/${teamId}/players`), {
-      playerName: playerName,
-      position: position,
+    // Add a player document to the 'players' collection inside the team document
+    const teamPlayersCollection = collection(
+      firestore,
+      `teams/${teamId}/players`
+    );
+    await addDoc(teamPlayersCollection, {
+      name: playerInfo.name,
+      birthday: playerInfo.birthday,
+      shirtNumber: playerInfo.shirtNumber,
+      position: playerInfo.position,
+      positionFieldZone: playerInfo.positionFieldZone,
+      nationality: playerInfo.nationality,
     });
+
+    // Upload the player photo to storage
+    if (playerInfo.photo) {
+      // const photoRef = ref(storage, `players/${playerRef.id}/photo`);
+      // await uploadBytes(photoRef, photo);
+      // const photoURL = await getDownloadURL(photoRef);
+
+      // // Update the player document with the photo URL
+      // await updateDoc(playerRef, {
+      //   photoURL: photoURL,
+      // });
+    }
 
     return null;
   } catch (error: any) {
@@ -85,28 +103,3 @@ export const addPlayerToTeam = async (
     return "Failed to add player to team.";
   }
 };
-
-// const getUserDocSnap = async () => {
-//   const userDocSnap = await getDoc(userDocRef);
-
-//   // Check if the document exists
-//   if (userDocSnap.exists()) {
-//     // Access the data using .data() method
-//     const userData = userDocSnap.data();
-
-//     if (userData) {
-//       // Access user properties
-//       const teamId = userData.teamId;
-
-//       if (teamId) {
-//         // The user has a team, you can proceed with the logic here
-//       } else {
-//         return "User does not have a team.";
-//       }
-//     } else {
-//       return "User data is invalid.";
-//     }
-//   } else {
-//     return "User document does not exist.";
-//   }
-// };

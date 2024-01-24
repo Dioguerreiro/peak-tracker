@@ -8,49 +8,68 @@ import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import { CustomDialogTitle } from "./DashboardAddNewPlayer.styles";
 import { CustomTextField } from "../Textfield/Textfield.styles";
 import { addPlayerToTeam } from "../../services/firebaseService";
+import { InputLabel, Select, MenuItem, FormControl } from "@mui/material";
+import { Dayjs } from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import PlayerProps, {
+  PlayerPosition,
+  PlayerPositionFieldZone,
+} from "./DashboardAddNewPlayer.types";
 
 interface DashboardAddNewPlayerProps {
   open: boolean;
   onClose: () => void;
 }
 
-interface PlayerInfo {
-  name: string;
-  age: string;
-  position: string;
-  photo: File | null;
-}
-
 const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
   open,
   onClose,
 }) => {
-  const [playerInfo, setPlayerInfo] = useState<PlayerInfo>({
-    name: "",
-    age: "",
-    position: "",
-    photo: null,
-  });
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [playerName, setPlayerName] = useState<string>("");
+  const [nationality, setNationality] = useState<string>("");
+  const [date, setDate] = useState<Dayjs | null>(null);
+  const [formatedDate, setFormatedDate] = useState<Date>();
+  const [shirtNumber, setShirtNumber] = useState<number>(1);
+  const [playerPosition, setPlayerPosition] = useState<
+    PlayerPosition
+  >(PlayerPosition.Goalkeeper);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setPlayerInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setPlayerInfo((prevInfo) => ({ ...prevInfo, photo: file || null }));
-  };
+  const onChangeDate = (newDate: Dayjs | null) => {
+    console.log(newDate?.toDate());
+    setDate(newDate);
+    setFormatedDate(newDate?.toDate());
+  }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (!playerName || !nationality || !formatedDate || !shirtNumber || !playerPosition) {
+      alert("Please fill in all the required fields.");
+      return;
+    }
+
     setIsLoading(true);
 
+    const player: PlayerProps = {
+      name: playerName,
+      birthday: formatedDate,
+      shirtNumber: shirtNumber,
+      position: playerPosition,
+      positionFieldZone: PlayerPositionFieldZone.Defender,
+      nationality: nationality,
+      photo: photo
+    }
+
     // Call your Firebase function to add the player
-    const result = await addPlayerToTeam(playerInfo.name, playerInfo.position);
+    const result = await addPlayerToTeam(
+      player
+    );
 
     setIsLoading(false);
 
@@ -62,12 +81,11 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
       console.log("Player added successfully!");
 
       // Reset the form
-      setPlayerInfo({
-        name: "",
-        age: "",
-        position: "",
-        photo: null,
-      });
+      setPlayerName("");
+      setNationality("");
+      setDate(null);
+      setShirtNumber(1);
+      setPlayerPosition(PlayerPosition.Goalkeeper);
 
       // Close the dialog
       onClose();
@@ -78,7 +96,7 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
     <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { borderRadius: "18px" } }}
+      PaperProps={{ sx: { borderRadius: "18px", width: "600px" } }}
     >
       <CustomDialogTitle className="text-3xl font-semibold text-center">
         Add New Player
@@ -89,38 +107,69 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
             <CircularProgress />
           </Box>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <CustomTextField
-              label="Name"
-              name="name"
-              value={playerInfo.name}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <CustomTextField
-              label="Age"
-              name="age"
-              value={playerInfo.age}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <CustomTextField
-              label="Position"
-              name="position"
-              value={playerInfo.position}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-2">
             {/* File input for photo upload */}
             <input
               type="file"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => setPhoto(e.target.files?.[0] || null)}
               style={{ margin: "16px 0" }}
             />
+            <CustomTextField
+              label="Name"
+              name="name"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <CustomTextField
+              label="Nationality"
+              name="nationality"
+              value={nationality}
+              onChange={(e) => setNationality(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <div className="w-full">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    value={date}
+                    onChange={(newDate) => onChangeDate(newDate)}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+            <div className="flex gap-4">
+              <CustomTextField
+                label="Shirt Number"
+                name="number"
+                type="number"
+                value={shirtNumber}
+                onChange={(e) => setShirtNumber(parseInt(e.target.value, 10))}
+                fullWidth
+                margin="normal"
+              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Position</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={playerPosition}
+                  label="Position"
+                  onChange={(e) =>
+                    setPlayerPosition(e.target.value as PlayerPosition)
+                  }
+                >
+                  {Object.values(PlayerPosition).map((position) => (
+                    <MenuItem key={position} value={position}>
+                      {position}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
             <DialogActions>
               <div className="flex gap-6">
                 <button
