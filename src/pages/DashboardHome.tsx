@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import Timer from "../components/Timer/Timer";
 import PlayersTab from "../components/PlayersTab/PlayersTab";
 import playersData from "../assets/json/players.json";
@@ -6,6 +6,7 @@ import { TPlayer } from "../components/PlayersTab/PlayersTab.types";
 import DashboardLayout from "../layout/DashboardLayout";
 import useAuthRedirect from "../misc/useAuthRedirect";
 import { Link } from "react-router-dom";
+import PrimaryButton from "../components/PrimaryButton/PrimaryButton";
 
 const DashboardPlay = () => {
   const { user, loading } = useAuthRedirect();
@@ -25,21 +26,7 @@ const DashboardPlay = () => {
   const handleStop = () => {
     setIsTimerRunning(false);
     setTimer(0);
-    setCurrentHearRate(0);
-    setCurrentHeartRateZone("");
-    setcurrentHeartRateData([]);
-    setCurrentAvgHeartRate(0);
-    setZoneTimers([0, 0, 0, 0, 0]);
   };
-
-  // Heart rate controllers
-  const [currentHeartRate, setCurrentHearRate] = useState<number>(0);
-  const [currentHeartRateZone, setCurrentHeartRateZone] = useState<string>("");
-  const [currentHeartRateData, setcurrentHeartRateData] = useState<number[]>(
-    []
-  );
-  const [currentAvgHeartRate, setCurrentAvgHeartRate] = useState<number>(0);
-  const [zoneTimers, setZoneTimers] = useState([0, 0, 0, 0, 0]);
 
   const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
 
@@ -58,12 +45,9 @@ const DashboardPlay = () => {
               handleStop={handleStop}
             />
             <div className="flex gap-5">
-              <button
-                className=" bg-neutral-800 uppercase text-white font-medium px-8 py-4 rounded-xl hover:bg-neutral-900 w-fit"
-                onClick={() => setSelectedPlayer(null)}
-              >
-                Squad
-              </button>
+              <PrimaryButton onClick={() => setSelectedPlayer(null)}>
+                SQUAD
+              </PrimaryButton>
               <Link
                 className=" border border-neutral-800 uppercase text-neutral-800 font-medium px-8 py-4 rounded-xl hover:bg-neutral-900 w-fit"
                 to="/"
@@ -72,7 +56,14 @@ const DashboardPlay = () => {
               </Link>
             </div>
           </div>
-          <PlayersTab players={playersData.soccerTeamPlayers as TPlayer[]} selectedPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer} />
+          <PlayersTab
+            players={playersData.soccerTeamPlayers as TPlayer[]}
+            selectedPlayer={selectedPlayer}
+            setSelectedPlayer={setSelectedPlayer}
+            heartRateChartProps={{
+              isTimerRunning,
+            }}
+          />
         </section>
       </section>
     </DashboardLayout>

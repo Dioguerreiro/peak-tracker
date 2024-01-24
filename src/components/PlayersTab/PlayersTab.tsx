@@ -3,7 +3,7 @@ import PlayersTabProps from "./PlayersTab.types";
 import HeartRateChart from "../HeartRate/HeartRate";
 import RunningDistanceSimulator from "../RunningDistance/RunningDistance";
 
-const PlayersTab: React.FC<PlayersTabProps> = ({ players, selectedPlayer, setSelectedPlayer }) => {
+const PlayersTab: React.FC<PlayersTabProps> = ({ players, selectedPlayer, setSelectedPlayer, heartRateChartProps }) => {
 
   return (
     <div className="flex flex-col gap-5">
@@ -34,19 +34,7 @@ const PlayersTab: React.FC<PlayersTabProps> = ({ players, selectedPlayer, setSel
         <div>
           {selectedPlayer}
           <HeartRateChart
-            restingHeartRate={70}
-            maxHeartRate={200}
-            isTimerRunning={false}
-            currentHeartRate={0}
-            setCurrentHearRate={() => {}}
-            currentHeartRateZone={""}
-            setCurrentHeartRateZone={() => {}}
-            currentHeartRateData={[]}
-            setcurrentHeartRateData={() => {}}
-            currentAvgHeartRate={0}
-            setCurrentAvgHeartRate={() => {}}
-            zoneTimers={[]}
-            setZoneTimers={() => {}}
+            isTimerRunning={heartRateChartProps.isTimerRunning}
           />
           <RunningDistanceSimulator />
         </div>

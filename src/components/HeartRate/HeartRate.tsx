@@ -1,21 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HeartRateChartProps from "./HeartRate.types";
 
-const HeartRateChart: React.FC<HeartRateChartProps> = ({
-  currentHeartRate,
-  setCurrentHearRate,
-  currentHeartRateZone,
-  setCurrentHeartRateZone,
-  currentHeartRateData,
-  setcurrentHeartRateData,
-  currentAvgHeartRate,
-  setCurrentAvgHeartRate,
-  restingHeartRate,
-  maxHeartRate,
-  isTimerRunning,
-  zoneTimers,
-  setZoneTimers,
-}) => {
+const HeartRateChart: React.FC<HeartRateChartProps> = ({ isTimerRunning }) => {
+  const maxHeartRate = 200;
+  const restingHeartRate = 70;
+  // Heart rate controllers
+  const [currentHeartRate, setCurrentHeartRate] = useState<number>(0);
+  const [currentHeartRateZone, setCurrentHeartRateZone] = useState<string>("");
+  const [currentHeartRateData, setcurrentHeartRateData] = useState<number[]>(
+    []
+  );
+  const [currentAvgHeartRate, setCurrentAvgHeartRate] = useState<number>(0);
+  const [zoneTimers, setZoneTimers] = useState([0, 0, 0, 0, 0]);
+
+  const handleStop = () => {
+    setCurrentHeartRate(0);
+    setCurrentHeartRateZone("");
+    setcurrentHeartRateData([]);
+    setCurrentAvgHeartRate(0);
+    setZoneTimers([0, 0, 0, 0, 0]);
+  }
+
   const setZoneColor = (newHeartRate: number) => {
     if (newHeartRate < 135) {
       setCurrentHeartRateZone("blue"); // Zone 1
@@ -72,7 +77,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
 
       // Update the heart rate and set the zone color
       setZoneColor(newHeartRate);
-      setCurrentHearRate(newHeartRate);
+      setCurrentHeartRate(newHeartRate);
 
       // Update heartRateData using the setHeartRateData function
       setcurrentHeartRateData((prevData: number[]) => [
@@ -95,12 +100,13 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
   };
 
   const formatTime = (seconds: number): string => {
-    const formattedMinutes = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const formattedMinutes = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
     const formattedSeconds = (seconds % 60).toString().padStart(2, "0");
-  
+
     return `${formattedMinutes}:${formattedSeconds}`;
   };
-  
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;

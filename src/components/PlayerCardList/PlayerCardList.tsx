@@ -2,8 +2,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PlayerCard from "../PlayerCard/PlayerCard";
 import PlayerCardListProps from "./PlayerCardList.types";
 import { faPlusCircle } from "@fortawesome/pro-solid-svg-icons";
+import { useState } from "react";
+import DashboardAddNewPlayer from "../DashboardAddNewPlayer/DashboardAddNewPlayer";
 
 const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone }) => {
+  const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
+
+  const openAddPlayerModal = () => {
+    setIsAddPlayerModalOpen(true);
+  };
+
+  const closeAddPlayerModal = () => {
+    setIsAddPlayerModalOpen(false);
+  };
+
   let fieldZone = "";
 
   // Set fieldZone based on the provided zone prop
@@ -28,11 +40,18 @@ const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone }) => {
             number={player.number}
           />
         ))}
-        <div className="flex flex-col h-80 w-[250px] bg-neutral-200 justify-center items-center gap-2 rounded-xl">
+        <div
+          onClick={openAddPlayerModal}
+          className="flex flex-col h-80 w-[250px] bg-neutral-200 hover:bg-neutral-300 justify-center items-center gap-2 rounded-xl cursor-pointer"
+        >
           <FontAwesomeIcon icon={faPlusCircle} className="text-3xl" />
           Add new {fieldZone}
         </div>
       </div>
+      <DashboardAddNewPlayer
+        open={isAddPlayerModalOpen}
+        onClose={closeAddPlayerModal}
+      />
     </div>
   );
 };

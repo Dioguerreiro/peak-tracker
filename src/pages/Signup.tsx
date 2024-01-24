@@ -4,6 +4,7 @@ import {
 } from "../authHelpers";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logoNew.png";
+import PrimaryButton from "../components/PrimaryButton/PrimaryButton";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -102,12 +103,7 @@ const Signup = () => {
               )}
             </div>
           </div>
-          <button
-            className="w-full bg-neutral-800 text-white font-medium px-3 py-4 rounded-xl hover:bg-neutral-900"
-            onClick={handleSignInWithEmailAndPassword}
-          >
-            Sign Up
-          </button>
+          <PrimaryButton onClick={handleSignInWithEmailAndPassword}>Sign Up</PrimaryButton>
           <p className="text-neutral-500 text-center">
             Already have an account?{" "}
             <Link className="text-neutral-800 underline" to="/">

@@ -4,6 +4,8 @@ import googleLogo from "../assets/svg/google_logo.svg";
 import { signInWithEmailAndPassword, signInWithGoogle } from "../authHelpers";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logoNew.png";
+import PrimaryButton from "../components/PrimaryButton/PrimaryButton";
+import { CustomTextField } from "../components/Textfield/Textfield.styles";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,10 +62,10 @@ const Login = () => {
           </div>
           <div className="flex flex-col gap-3">
             <div>
-              <input
+              <CustomTextField
                 type="text"
                 id="email"
-                className="border border-neutral-300 text-gray-900 rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-5"
+                label="Email address"
                 placeholder="Email address"
                 required
                 value={email}
@@ -71,10 +73,9 @@ const Login = () => {
               />
             </div>
             <div>
-              <input
+              <CustomTextField
                 type="password"
                 id="pasword"
-                className="border border-neutral-300 text-gray-900S rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-5"
                 placeholder="Password"
                 required
                 value={password}
@@ -109,12 +110,9 @@ const Login = () => {
               Forgot password?
             </Link>
           </div>
-          <button
-            className="w-full bg-neutral-800 text-white font-medium px-3 py-4 rounded-xl hover:bg-neutral-900"
-            onClick={handleSignInWithEmailAndPassword}
-          >
+          <PrimaryButton onClick={handleSignInWithEmailAndPassword}>
             Sign In
-          </button>
+          </PrimaryButton>
           <p className="text-neutral-500 text-center">
             Not a member?{" "}
             <Link className="text-neutral-800 underline" to="/signup">

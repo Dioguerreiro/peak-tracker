@@ -6,7 +6,7 @@ import Signin from "./pages/Signup";
 import DashboardCalendar from "./pages/DashboardCalendar";
 import DashboardVideos from "./pages/DashboardVideos";
 import DashboardChat from "./pages/DashboardChat";
-import DashboardSettings from "./pages/DashboardSettings";
+import DashboardSettings from "./pages/DashboardSettings/DashboardSettings";
 import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
