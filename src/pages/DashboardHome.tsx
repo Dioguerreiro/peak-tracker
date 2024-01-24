@@ -62,6 +62,11 @@ const DashboardPlay = () => {
             setSelectedPlayer={setSelectedPlayer}
             heartRateChartProps={{
               isTimerRunning,
+              player: {
+                number: playersData.soccerTeamPlayers[0].number,
+                name: playersData.soccerTeamPlayers[0].name,
+              },
+              selectedPlayer: null,
             }}
           />
         </section>

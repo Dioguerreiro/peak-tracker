@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PlayersTabProps from "./PlayersTab.types";
 import HeartRateChart from "../HeartRate/HeartRate";
 import RunningDistanceSimulator from "../RunningDistance/RunningDistance";
 
-const PlayersTab: React.FC<PlayersTabProps> = ({ players, selectedPlayer, setSelectedPlayer, heartRateChartProps }) => {
-
+const PlayersTab: React.FC<PlayersTabProps> = ({
+  players,
+  selectedPlayer,
+  setSelectedPlayer,
+  heartRateChartProps,
+}) => {
   return (
     <div className="flex flex-col gap-5">
       <div className="bg-white rounded-xl py-5 px-10">
@@ -21,21 +25,31 @@ const PlayersTab: React.FC<PlayersTabProps> = ({ players, selectedPlayer, setSel
                   src={`/images/players/${player.number}.jpeg`}
                   alt={player.name}
                 />
-                <div className={`text-center cursor-pointer ${
-                    selectedPlayer === player.number ? "text-red-500 font-bold" : ""
-                  }`}>{player.name}</div>
+                <div
+                  className={`text-center cursor-pointer ${
+                    selectedPlayer === player.number
+                      ? "text-red-500 font-bold"
+                      : ""
+                  }`}
+                >
+                  {player.name}
+                </div>
               </div>
             </li>
           ))}
         </ul>
       </div>
 
-      {selectedPlayer !== null && (
+      {selectedPlayer && (
         <div>
-          {selectedPlayer}
-          <HeartRateChart
-            isTimerRunning={heartRateChartProps.isTimerRunning}
-          />
+          {players.map((player, index) => (
+            <HeartRateChart
+              key={index}
+              isTimerRunning={heartRateChartProps.isTimerRunning}
+              player={player}
+              selectedPlayer={selectedPlayer}
+            />
+          ))}
           <RunningDistanceSimulator />
         </div>
       )}
