@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { auth } from "../services/firebase";
 
 const useAuthRedirect = () => {
   const [user, loading] = useAuthState(auth);

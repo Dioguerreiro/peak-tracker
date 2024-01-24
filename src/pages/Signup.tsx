@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   registerWithEmailAndPassword,
-} from "../authHelpers";
+} from "../services/authHelpers";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logoNew.png";
 import PrimaryButton from "../components/PrimaryButton/PrimaryButton";
@@ -31,7 +31,7 @@ const Signup = () => {
         password
       );
       if (!hasError) {
-        navigate("/dashboard/play");
+        navigate("/createteam");
       }
     }
   };

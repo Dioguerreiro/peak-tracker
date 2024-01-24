@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../../assets/logo/logo.png";
-import { signOut } from "../../authHelpers";
+import { signOut } from "../../services/authHelpers";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   faGrid2,

@@ -18,6 +18,7 @@ import { auth } from "./firebase";
 
 const app = auth.app;
 const db = getFirestore(app);
+console.log(db);
 const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async (): Promise<string | null> => {
@@ -26,14 +27,14 @@ export const signInWithGoogle = async (): Promise<string | null> => {
     const user = res.user;
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
-    // if (docs.docs.length === 0) {
-    //   await addDoc(collection(db, "users"), {
-    //     uid: user.uid,
-    //     name: user.displayName,
-    //     authProvider: "google",
-    //     email: user.email,
-    //   });
-    // }
+    if (docs.docs.length === 0) {
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      });
+    }
     return null;
   } catch (err: any) {
     console.error(err);
@@ -64,12 +65,15 @@ export const registerWithEmailAndPassword = async (
   try {
     const res = await createUserWithEmailAndPasswordBase(auth, email, password);
     const user = res.user;
-    // await addDoc(collection(db, "users"), {
-    //   uid: user.uid,
-    //   name,
-    //   authProvider: "local",
-    //   email,
-    // });
+
+    // Create a user document in Firestore
+    await addDoc(collection(db, "users"), {
+      uid: user.uid,
+      name: name,
+      authProvider: "email", // Indicate that the user registered with email/password
+      email: user.email,
+    });
+
     return null;
   } catch (err: any) {
     console.error(err);

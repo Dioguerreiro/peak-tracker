@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import { CustomDialogTitle } from "./DashboardAddNewPlayer.styles";
 import { CustomTextField } from "../Textfield/Textfield.styles";
+import { addPlayerToTeam } from "../../services/firebaseService";
 
 interface DashboardAddNewPlayerProps {
   open: boolean;
@@ -48,21 +49,29 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
 
     setIsLoading(true);
 
-    // Simulate a delay (you can replace this with your actual asynchronous logic)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    console.log("Player Info:", playerInfo);
-
-    setPlayerInfo({
-      name: "",
-      age: "",
-      position: "",
-      photo: null,
-    });
+    // Call your Firebase function to add the player
+    const result = await addPlayerToTeam(playerInfo.name, playerInfo.position);
 
     setIsLoading(false);
 
-    onClose();
+    if (result) {
+      // Handle error (e.g., show an error message)
+      console.error("Error adding player:", result);
+    } else {
+      // Player added successfully
+      console.log("Player added successfully!");
+
+      // Reset the form
+      setPlayerInfo({
+        name: "",
+        age: "",
+        position: "",
+        photo: null,
+      });
+
+      // Close the dialog
+      onClose();
+    }
   };
 
   return (

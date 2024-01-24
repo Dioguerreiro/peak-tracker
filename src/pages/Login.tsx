@@ -1,7 +1,7 @@
 import { useState } from "react";
 import appleLogo from "../assets/svg/apple-logo.svg";
 import googleLogo from "../assets/svg/google_logo.svg";
-import { signInWithEmailAndPassword, signInWithGoogle } from "../authHelpers";
+import { signInWithEmailAndPassword, signInWithGoogle } from "../services/authHelpers";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logoNew.png";
 import PrimaryButton from "../components/PrimaryButton/PrimaryButton";

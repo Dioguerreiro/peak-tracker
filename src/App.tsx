@@ -8,6 +8,7 @@ import DashboardVideos from "./pages/DashboardVideos";
 import DashboardChat from "./pages/DashboardChat";
 import DashboardSettings from "./pages/DashboardSettings/DashboardSettings";
 import ForgotPassword from "./pages/ForgotPassword";
+import CreateTeam from "./pages/CreateTeam/CreateTeam";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signin />} />
         <Route path="/resetpassword" element={<ForgotPassword />} />
+        <Route path="/createteam" element={<CreateTeam />} />
         <Route path="dashboard">
           <Route path="/dashboard/play" element={<DashboardPlay />} />
           <Route path="/dashboard/team" element={<DashboardTeam />} />
