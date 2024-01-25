@@ -34,22 +34,56 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
   const [date, setDate] = useState<Dayjs | null>(null);
   const [formatedDate, setFormatedDate] = useState<Date>();
   const [shirtNumber, setShirtNumber] = useState<number>(1);
-  const [playerPosition, setPlayerPosition] = useState<
-    PlayerPosition
-  >(PlayerPosition.Goalkeeper);
+  const [playerPosition, setPlayerPosition] = useState<PlayerPosition>(
+    PlayerPosition.Goalkeeper
+  );
+  const [playerPositionZone, setPlayerPositionZone] =
+    useState<PlayerPositionFieldZone>(PlayerPositionFieldZone.Goalkeeper);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onChangeDate = (newDate: Dayjs | null) => {
-    console.log(newDate?.toDate());
     setDate(newDate);
     setFormatedDate(newDate?.toDate());
-  }
+  };
+
+  const onChangePosition = (newPosition: PlayerPosition) => {
+    setPlayerPosition(newPosition);
+    if (newPosition === PlayerPosition.Goalkeeper) {
+      setPlayerPositionZone(PlayerPositionFieldZone.Goalkeeper);
+    } else if (
+      newPosition === PlayerPosition.CenterDefender ||
+      newPosition === PlayerPosition.LeftDefender ||
+      newPosition === PlayerPosition.LeftWingBack ||
+      newPosition === PlayerPosition.RighWingBack ||
+      newPosition === PlayerPosition.RightDefender
+    ) {
+      setPlayerPositionZone(PlayerPositionFieldZone.Defender);
+    } else if (
+      newPosition === PlayerPosition.DefensiveMidfielder ||
+      newPosition === PlayerPosition.CentralMidfielder ||
+      newPosition === PlayerPosition.LeftMidfielder ||
+      newPosition === PlayerPosition.RightMidfielder ||
+      newPosition === PlayerPosition.AttackingMidfileder ||
+      newPosition === PlayerPosition.LeftWinger ||
+      newPosition === PlayerPosition.RightWinger
+    ) {
+    } else {
+      setPlayerPositionZone(PlayerPositionFieldZone.Striker);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!playerName || !nationality || !formatedDate || !shirtNumber || !playerPosition) {
+    if (
+      !playerName ||
+      !nationality ||
+      !formatedDate ||
+      !shirtNumber ||
+      !playerPosition ||
+      !playerPositionZone
+    ) {
       alert("Please fill in all the required fields.");
       return;
     }
@@ -61,15 +95,13 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
       birthday: formatedDate,
       shirtNumber: shirtNumber,
       position: playerPosition,
-      positionFieldZone: PlayerPositionFieldZone.Defender,
+      positionFieldZone: playerPositionZone,
       nationality: nationality,
-      photo: photo
-    }
+      photo: photo,
+    };
 
     // Call your Firebase function to add the player
-    const result = await addPlayerToTeam(
-      player
-    );
+    const result = await addPlayerToTeam(player);
 
     setIsLoading(false);
 
@@ -159,7 +191,7 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
                   value={playerPosition}
                   label="Position"
                   onChange={(e) =>
-                    setPlayerPosition(e.target.value as PlayerPosition)
+                    onChangePosition(e.target.value as PlayerPosition)
                   }
                 >
                   {Object.values(PlayerPosition).map((position) => (

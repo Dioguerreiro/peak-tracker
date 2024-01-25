@@ -1,10 +1,7 @@
-export type TPlayer = {
-  number: number;
-  name: string;
-};
+import PlayerProps from "../DashboardAddNewPlayer/DashboardAddNewPlayer.types";
 
 interface PlayerCardListProps {
-  players: TPlayer[];
+  players: PlayerProps[];
   zone: string;
 }
 

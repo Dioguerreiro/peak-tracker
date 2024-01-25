@@ -6,6 +6,7 @@ interface PlayerProps {
   positionFieldZone: PlayerPositionFieldZone;
   nationality: string;
   photo?: File | null;
+  photoURL?: string;
 }
 
 export enum PlayerPosition {

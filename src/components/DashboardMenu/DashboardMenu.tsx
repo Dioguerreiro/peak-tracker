@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   faGrid2,
   faUsers,
-  faPlay,
+  faChartSimple,
   faCalendar,
   faComments,
   faGear,
@@ -43,12 +43,12 @@ const DashboardMenu = () => {
           <FontAwesomeIcon icon={faUsers} className="text-4xl"/>
         </NavLink>
         <NavLink
-          to="/dashboard/videos"
+          to="/dashboard/stats"
           className={({ isActive }) =>
             isActive ? "text-white" : "text-neutral-400"
           }
         >
-          <FontAwesomeIcon icon={faPlay} className="text-4xl"/>
+          <FontAwesomeIcon icon={faChartSimple} className="text-4xl"/>
         </NavLink>
         <NavLink
           to="/dashboard/calendar"

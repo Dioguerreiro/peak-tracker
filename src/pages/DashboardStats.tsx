@@ -1,7 +1,7 @@
 import DashboardLayout from "../layout/DashboardLayout";
 import useAuthRedirect from "../misc/useAuthRedirect";
 
-const DashboardVideos = () => {
+const DashboardStats = () => {
   const { user, loading } = useAuthRedirect();
 
   return (
@@ -11,4 +11,4 @@ const DashboardVideos = () => {
   );
 };
 
-export default DashboardVideos;
+export default DashboardStats;

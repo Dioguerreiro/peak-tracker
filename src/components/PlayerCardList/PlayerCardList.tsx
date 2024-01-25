@@ -35,9 +35,10 @@ const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone }) => {
       <div className="grid grid-cols-5 gap-4">
         {players.map((player) => (
           <PlayerCard
-            key={player.number}
+            key={player.shirtNumber}
             name={player.name}
-            number={player.number}
+            shirtNumber={player.shirtNumber}
+            photoURL={player.photoURL}
           />
         ))}
         <div

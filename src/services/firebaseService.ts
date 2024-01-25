@@ -9,7 +9,12 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 // Function to create a team for the logged-in user
 export const createTeam = async (teamName: string): Promise<string | null> => {
@@ -88,12 +93,91 @@ export const addPlayerToTeam = async (
 
     // Save the player photo to Firebase Storage
     const storage = getStorage();
-    const photoRef = storageRef(storage, `teams/${teamId}/players/${playerDocRef.id}/photo`);
+    const photoRef = storageRef(
+      storage,
+      `teams/${teamId}/players/${playerDocRef.id}/photo`
+    );
     await uploadBytes(photoRef, playerInfo.photo as Blob);
 
     return null;
   } catch (error: any) {
     console.error("Error adding player to team:", error.message || error);
     return "Failed to add player to team.";
+  }
+};
+
+export const getPlayersFromTeam = async (): Promise<PlayerProps[] | null> => {
+  try {
+    // Get the currently logged-in user
+    const user = auth.currentUser;
+
+    // Check if the user is authenticated
+    if (!user || !user.uid) {
+      return null;
+    }
+
+    // Query teams where userId is equal to the user's UID
+    const teamsQuery = query(
+      collection(firestore, "teams"),
+      where("userId", "==", user.uid)
+    );
+
+    // Get teams matching the query
+    const teamsSnapshot = await getDocs(teamsQuery);
+
+    // Check if any team was found
+    if (teamsSnapshot.empty) {
+      return null;
+    }
+
+    // Assuming the user has only one team, get the first team
+    const teamDoc = teamsSnapshot.docs[0];
+
+    // Get the team ID from the team document
+    const teamId = teamDoc.id;
+
+    // Query players from the 'players' collection inside the team document
+    const teamPlayersQuery = query(
+      collection(firestore, `teams/${teamId}/players`)
+    );
+
+    // Get players matching the query
+    const playersSnapshot = await getDocs(teamPlayersQuery);
+
+    // Map the player documents to PlayerProps
+    const players: PlayerProps[] = await Promise.all(
+      playersSnapshot.docs.map(async (playerDoc) => {
+        const playerData = playerDoc.data();
+
+        const storage = getStorage();
+        const photoRef = storageRef(
+          storage,
+          `teams/${teamId}/players/${playerDoc.id}/photo`
+        );
+        console.log(`teams/${teamId}/players/${playerDoc.id}/photo`)
+        let photoURL = "";
+
+        try {
+          photoURL = await getDownloadURL(photoRef);
+        } catch (error) {
+          console.log("The image does not exists");
+        }
+
+        return {
+          name: playerData.name,
+          birthday: playerData.birthday,
+          shirtNumber: playerData.shirtNumber,
+          position: playerData.position,
+          positionFieldZone: playerData.positionFieldZone,
+          nationality: playerData.nationality,
+          photoURL: photoURL,
+        };
+      })
+    );
+
+    return players;
+  } catch (error: any) {
+    console.error("Error getting players from team:", error.message || error);
+    return null;
   }
 };
