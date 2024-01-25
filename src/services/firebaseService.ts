@@ -4,12 +4,12 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
+import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 
 // Function to create a team for the logged-in user
 export const createTeam = async (teamName: string): Promise<string | null> => {
@@ -76,7 +76,8 @@ export const addPlayerToTeam = async (
       firestore,
       `teams/${teamId}/players`
     );
-    await addDoc(teamPlayersCollection, {
+
+    const playerDocRef = await addDoc(teamPlayersCollection, {
       name: playerInfo.name,
       birthday: playerInfo.birthday,
       shirtNumber: playerInfo.shirtNumber,
@@ -85,17 +86,10 @@ export const addPlayerToTeam = async (
       nationality: playerInfo.nationality,
     });
 
-    // Upload the player photo to storage
-    if (playerInfo.photo) {
-      // const photoRef = ref(storage, `players/${playerRef.id}/photo`);
-      // await uploadBytes(photoRef, photo);
-      // const photoURL = await getDownloadURL(photoRef);
-
-      // // Update the player document with the photo URL
-      // await updateDoc(playerRef, {
-      //   photoURL: photoURL,
-      // });
-    }
+    // Save the player photo to Firebase Storage
+    const storage = getStorage();
+    const photoRef = storageRef(storage, `teams/${teamId}/players/${playerDocRef.id}/photo`);
+    await uploadBytes(photoRef, playerInfo.photo as Blob);
 
     return null;
   } catch (error: any) {
