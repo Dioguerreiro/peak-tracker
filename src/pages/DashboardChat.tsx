@@ -1,3 +1,4 @@
+import ChatApp from "../components/Chat/ChatApp/ChatApp";
 import DashboardLayout from "../layout/DashboardLayout";
 import useAuthRedirect from "../misc/useAuthRedirect";
 
@@ -6,7 +7,7 @@ const DashboardChat = () => {
 
   return (
     <DashboardLayout>
-      <div>Chat</div>
+      <ChatApp />
     </DashboardLayout>
   );
 };
