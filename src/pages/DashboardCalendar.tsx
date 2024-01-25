@@ -1,3 +1,4 @@
+import CustomCalendar from "../components/Calendar/Calendar";
 import DashboardLayout from "../layout/DashboardLayout";
 import useAuthRedirect from "../misc/useAuthRedirect";
 
@@ -6,7 +7,9 @@ const DashboardCalendar = () => {
 
   return (
     <DashboardLayout>
-      <div>Calendar</div>
+      <div className="p-5">
+      <CustomCalendar/>
+      </div>
     </DashboardLayout>
   );
 };
