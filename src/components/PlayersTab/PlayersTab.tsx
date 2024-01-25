@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import PlayersTabProps from "./PlayersTab.types";
 import HeartRateChart from "../HeartRate/HeartRate";
 import RunningDistanceSimulator from "../RunningDistance/RunningDistance";
+import RunningSpeed from "../RunningSpeed/RunningSpeed";
+import PlayerBodyTemperature from "../PlayerBodyTemperature/PlayerBodyTemperature";
+import PlayersStats from "../PlayerStats/PlayerStats";
 
 const PlayersTab: React.FC<PlayersTabProps> = ({
   players,
   selectedPlayer,
   setSelectedPlayer,
-  heartRateChartProps,
+  isTimerRunning,
 }) => {
   return (
     <div className="flex flex-col gap-5">
@@ -41,16 +44,15 @@ const PlayersTab: React.FC<PlayersTabProps> = ({
       </div>
 
       {selectedPlayer && (
-        <div>
+        <div className="flex gap-5">
           {players.map((player, index) => (
-            <HeartRateChart
+            <PlayersStats
               key={index}
-              isTimerRunning={heartRateChartProps.isTimerRunning}
+              isTimerRunning={isTimerRunning}
               player={player}
               selectedPlayer={selectedPlayer}
             />
           ))}
-          <RunningDistanceSimulator />
         </div>
       )}
     </div>

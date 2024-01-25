@@ -7,6 +7,7 @@ import DashboardLayout from "../layout/DashboardLayout";
 import useAuthRedirect from "../misc/useAuthRedirect";
 import { Link } from "react-router-dom";
 import PrimaryButton from "../components/PrimaryButton/PrimaryButton";
+import { usePlayerStatsContext } from "../context/PlayerStatsContext.context";
 
 const DashboardPlay = () => {
   const { user, loading } = useAuthRedirect();
@@ -14,6 +15,10 @@ const DashboardPlay = () => {
   // Timer controllers
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const {
+    handleStopHeartRate
+  } = usePlayerStatsContext();
 
   const handleStart = () => {
     setIsTimerRunning(true);
@@ -26,6 +31,7 @@ const DashboardPlay = () => {
   const handleStop = () => {
     setIsTimerRunning(false);
     setTimer(0);
+    handleStopHeartRate();
   };
 
   const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
@@ -60,14 +66,7 @@ const DashboardPlay = () => {
             players={playersData.soccerTeamPlayers as TPlayer[]}
             selectedPlayer={selectedPlayer}
             setSelectedPlayer={setSelectedPlayer}
-            heartRateChartProps={{
-              isTimerRunning,
-              player: {
-                number: playersData.soccerTeamPlayers[0].number,
-                name: playersData.soccerTeamPlayers[0].name,
-              },
-              selectedPlayer: null,
-            }}
+            isTimerRunning={isTimerRunning}
           />
         </section>
       </section>

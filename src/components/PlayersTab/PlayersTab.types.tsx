@@ -9,7 +9,7 @@ interface PlayersTabProps {
   players: TPlayer[];
   selectedPlayer: number | null;
   setSelectedPlayer: (player: number) => void;
-  heartRateChartProps: HeartRateChartProps;
+  isTimerRunning: boolean;
 }
 
 export default PlayersTabProps;

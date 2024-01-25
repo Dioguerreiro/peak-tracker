@@ -205,6 +205,7 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
             <DialogActions>
               <div className="flex gap-6">
                 <button
+                  type="button"
                   onClick={onClose}
                   className="px-3 py-4 text-neutral-900"
                 >
