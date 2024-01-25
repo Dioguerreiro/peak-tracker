@@ -6,7 +6,7 @@ const DashboardStats = () => {
 
   return (
     <DashboardLayout>
-      <div>Videos</div>
+      <div>Team Stats In Previous Games / Trainning sessions</div>
     </DashboardLayout>
   );
 };
