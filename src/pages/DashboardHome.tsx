@@ -17,7 +17,7 @@ const DashboardPlay = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const {
-    handleStopHeartRate
+    handleStop
   } = usePlayerStatsContext();
 
   const handleStart = () => {
@@ -28,10 +28,10 @@ const DashboardPlay = () => {
     setIsTimerRunning(false);
   };
 
-  const handleStop = () => {
+  const handleStopTimer = () => {
     setIsTimerRunning(false);
     setTimer(0);
-    handleStopHeartRate();
+    handleStop();
   };
 
   const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
@@ -48,7 +48,7 @@ const DashboardPlay = () => {
               setTimer={setTimer}
               handleStart={handleStart}
               handlePause={handlePause}
-              handleStop={handleStop}
+              handleStop={handleStopTimer}
             />
             <div className="flex gap-5">
               <PrimaryButton onClick={() => setSelectedPlayer(null)}>

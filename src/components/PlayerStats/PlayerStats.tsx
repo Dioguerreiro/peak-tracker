@@ -15,6 +15,7 @@ const PlayersStats: React.FC<PlayerStatsProps> = ({
         <>
           <HeartRateChart
             isTimerRunning={isTimerRunning}
+            player={player}
           />
           <div className="flex flex-col gap-5">
             <RunningDistanceSimulator isTimerRunning={isTimerRunning}/>

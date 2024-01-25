@@ -11,29 +11,29 @@ const ChatApp: React.FC = () => {
   const chats: Chat[] = [
     {
       id: 1,
-      name: "Ricardo Mestre",
+      name: "Roger Schmidt",
       image: avatar,
       messages: [
-        { id: 1, sender: "Ricardo Mestre", text: "Hello in Chat 1!" },
-        { id: 2, receiver: "Diogo Guerreiro", text: "Hi there in Chat 1!" },
+        { id: 1, sender: "Diogo Guerreiro", text: "Hello in Chat 1!" },
+        { id: 2, receiver: "Roger Schmidt", text: "Hi there in Chat 1!" },
       ],
     },
     {
       id: 2,
-      name: "Diogo Guerreiro",
+      name: "Jörn-Erik Wolf",
       image: avatar,
       messages: [
         { id: 1, sender: "Diogo Guerreiro", text: "Hello in Chat 2!" },
-        { id: 2, receiver: "Ricardo Mestre", text: "Hi there in Chat 2!" },
+        { id: 2, receiver: "Jörn-Erik Wolf", text: "Hi there in Chat 2!" },
       ],
     },
     {
       id: 3,
-      name: "Zeca Afonso",
+      name: "Javi García",
       image: avatar,
       messages: [
-        { id: 1, sender: "Òscar Lindeza", text: "Olá João, tudo bem?" },
-        { id: 2, receiver: "João Barros Gomes", text: "Tudo e por ai?" },
+        { id: 1, sender: "Diogo Guerreiro", text: "Hello in Chat 3!" },
+        { id: 2, receiver: "Javi García", text: "Hi there in Chat 3!" },
       ],
     },
   ];

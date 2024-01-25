@@ -6,6 +6,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import playersData from "../assets/json/players.json";
+import { TPlayer } from "../components/PlayersTab/PlayersTab.types";
 import { IPlayerStatsContext } from "./PlayerStatsContext.types";
 
 export const PlayerStatsContext = createContext<IPlayerStatsContext>(
@@ -15,35 +17,62 @@ export const PlayerStatsContext = createContext<IPlayerStatsContext>(
 export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [currentHeartRate, setCurrentHeartRate] = useState<number>(0);
-  const [currentHeartRateZone, setCurrentHeartRateZone] = useState<string>("");
-  const [currentHeartRateData, setcurrentHeartRateData] = useState<number[]>(
-    []
-  );
-  const [currentAvgHeartRate, setCurrentAvgHeartRate] = useState<number>(0);
-  const [zoneTimers, setZoneTimers] = useState([0, 0, 0, 0, 0]);
+  const [players] = useState(playersData.soccerTeamPlayers as TPlayer[]);
 
-  const handleStopHeartRate = () => {
-    setCurrentHeartRate(0);
-    setCurrentHeartRateZone("");
-    setcurrentHeartRateData([]);
-    setCurrentAvgHeartRate(0);
-    setZoneTimers([0, 0, 0, 0, 0]);
+  // New Solution
+  const [currentHeartRate, setCurrentHeartRate] = useState(
+    Object.fromEntries(players.map((player) => [player.number, 0]))
+  );
+  const [currentHeartRateZone, setCurrentHeartRateZone] = useState(
+    Object.fromEntries(players.map((player) => [player.number, ""]))
+  );
+  const [currentHeartRateData, setCurrentHeartRateData] = useState(
+    Object.fromEntries(players.map((player) => [player.number, [] as number[]]))
+  );
+  const [currentAvgHeartRate, setCurrentAvgHeartRate] = useState(
+    Object.fromEntries(players.map((player) => [player.number, 0]))
+  );
+  const [zoneTimers, setZoneTimers] = useState(
+    Object.fromEntries(
+      players.map((player) => [player.number, [0, 0, 0, 0, 0]])
+    )
+  );
+
+  const handleStop = () => {
+    setCurrentHeartRate(
+      Object.fromEntries(players.map((player) => [player.number, 0]))
+    );
+    setCurrentHeartRateZone(
+      Object.fromEntries(players.map((player) => [player.number, ""]))
+    );
+    setCurrentHeartRateData(
+      Object.fromEntries(
+        players.map((player) => [player.number, [] as number[]])
+      )
+    );
+    setCurrentAvgHeartRate(
+      Object.fromEntries(players.map((player) => [player.number, 0]))
+    );
+    setZoneTimers(
+      Object.fromEntries(
+        players.map((player) => [player.number, [0, 0, 0, 0, 0]])
+      )
+    );
   };
 
-  const playerStatsMemo = useMemo(
+  const PlayerStatsMemo = useMemo(
     () => ({
       currentHeartRate,
       setCurrentHeartRate,
       currentHeartRateZone,
       setCurrentHeartRateZone,
       currentHeartRateData,
-      setcurrentHeartRateData,
+      setCurrentHeartRateData,
       currentAvgHeartRate,
       setCurrentAvgHeartRate,
       zoneTimers,
       setZoneTimers,
-      handleStopHeartRate,
+      handleStop,
     }),
     [
       currentHeartRate,
@@ -56,7 +85,7 @@ export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
 
   return (
     <>
-      <PlayerStatsContext.Provider value={playerStatsMemo}>
+      <PlayerStatsContext.Provider value={PlayerStatsMemo}>
         {children}
       </PlayerStatsContext.Provider>
     </>
