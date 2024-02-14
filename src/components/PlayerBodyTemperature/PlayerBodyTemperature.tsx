@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import PlayerBodyTemperatureProps from "./PlayerBodyTemperature.types";
+import { usePlayerStatsContext } from "../../context/PlayerStatsContext.context";
 
 ChartJS.register(
   CategoryScale,
@@ -22,8 +23,9 @@ ChartJS.register(
   Legend
 );
 
-const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRunning }) => {
-  const [temperatureData, setTemperatureData] = useState([27]);
+const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRunning, player }) => {
+  const { bodyTemperature, setBodyTemperature } = usePlayerStatsContext();
+  
   const [labels, setLabels] = useState<number[]>([0]);
 
   const options = {
@@ -45,7 +47,7 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     datasets: [
       {
         label: "Body Temperature",
-        data: temperatureData,
+        data: bodyTemperature[player.number],
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
@@ -56,13 +58,9 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     // Generate a random temperature value (you can adjust the range)
     const randomTemperature = Math.random() * 10 + 35;
     const newLabel = labels.length + 1;
-    console.log(Math.round(randomTemperature));
-    console.log(JSON.stringify(data));
     setLabels((prevLabels) => [...prevLabels, newLabel]);
-    setTemperatureData((prevData) => [
-      ...prevData,
-      Math.round(randomTemperature),
-    ]);
+    bodyTemperature[player.number] = [...bodyTemperature[player.number], Math.round(randomTemperature)]
+    setBodyTemperature(bodyTemperature);
   }
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, data, temperatureData, labels]);
+  }, [isTimerRunning, data, bodyTemperature[player.number], labels]);
 
   return (
     <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-full w-full">

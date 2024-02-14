@@ -1,13 +1,18 @@
-import { useState, useEffect } from 'react';
-import PlayerRunningDistanceProps from './RunningDistance.types';
+import { useState, useEffect } from "react";
+import PlayerRunningDistanceProps from "./RunningDistance.types";
+import { usePlayerStatsContext } from "../../context/PlayerStatsContext.context";
 
-const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({isTimerRunning}) => {
-  const [distance, setDistance] = useState(0);
+const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({
+  isTimerRunning,
+  player,
+}) => {
+  const { distance, setDistance } = usePlayerStatsContext();
 
   const simulateDistance = () => {
     const speed = 5;
-    setDistance((prevDistance) => prevDistance + speed * 10);
-  }
+    distance[player.number] = distance[player.number] + speed * 10;
+    setDistance(distance);
+  };
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -22,9 +27,9 @@ const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({isTimer
   }, [isTimerRunning, distance]);
 
   return (
-    <div className='bg-white rounded-xl p-10 flex flex-col gap-7 h-fit'>
-      <h2 className='text-3xl font-bold'>Total Distance</h2>
-      <p className='text-2xl '>{distance} m</p>
+    <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">
+      <h2 className="text-3xl font-bold">Total Distance</h2>
+      <p className="text-2xl ">{distance[player.number]} m</p>
     </div>
   );
 };

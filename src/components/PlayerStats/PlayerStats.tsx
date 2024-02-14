@@ -18,11 +18,11 @@ const PlayersStats: React.FC<PlayerStatsProps> = ({
             player={player}
           />
           <div className="flex flex-col gap-5">
-            <RunningDistanceSimulator isTimerRunning={isTimerRunning}/>
-            <RunningSpeed isTimerRunning={isTimerRunning}/>
+            <RunningDistanceSimulator isTimerRunning={isTimerRunning} player={player}/>
+            <RunningSpeed isTimerRunning={isTimerRunning} player={player}/>
           </div>
           <div className="flex-grow">
-            <PlayerBodyTemperature isTimerRunning={isTimerRunning}/>
+            <PlayerBodyTemperature isTimerRunning={isTimerRunning} player={player}/>
           </div>
         </>
       )}

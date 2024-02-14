@@ -40,5 +40,41 @@ export interface IPlayerStatsContext {
       [k: string]: number[];
     }>
   >;
+
+  distance: {
+    [k: string]: number;
+  };
+  setDistance: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number;
+    }>
+  >;
+
+  speed: {
+    [k: string]: number;
+  };
+  setSpeed: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number;
+    }>
+  >;
+  maxSpeed: {
+    [k: string]: number;
+  };
+  setMaxSpeed: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number;
+    }>
+  >;
+
+  bodyTemperature: {
+    [k: string]: number[];
+  };
+  setBodyTemperature: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number[];
+    }>
+  >;
+
   handleStop: () => void;
 }
