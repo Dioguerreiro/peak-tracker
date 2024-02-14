@@ -69,7 +69,7 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     let intervalId: NodeJS.Timeout;
 
     if (isTimerRunning) {
-      intervalId = setInterval(simulateBodyTemperature, 10000); // Update every second
+      intervalId = setInterval(simulateBodyTemperature, 1000); // Update every second
     }
 
     return () => {

@@ -3,7 +3,7 @@ import { IChatMessages } from "./ChatMessages.types";
 
 const ChatMessages: React.FC<IChatMessages> = ({ messages }) => {
   return (
-    <div className="bg-sky-50 p-4 h-96 overflow-y-auto">
+    <div className=" p-4 h-96 overflow-y-auto">
       {messages.map((message) => (
         <>
           <p
