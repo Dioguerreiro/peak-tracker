@@ -43,18 +43,16 @@ const PlayersTab: React.FC<PlayersTabProps> = ({
         </ul>
       </div>
 
-      {selectedPlayer && (
-        <div className="flex gap-5">
-          {players.map((player, index) => (
-            <PlayersStats
-              key={index}
-              isTimerRunning={isTimerRunning}
-              player={player}
-              selectedPlayer={selectedPlayer}
-            />
-          ))}
-        </div>
-      )}
+      <div className="flex gap-5">
+        {players.map((player, index) => (
+          <PlayersStats
+            key={index}
+            isTimerRunning={isTimerRunning}
+            player={player}
+            selectedPlayer={selectedPlayer}
+          />
+        ))}
+      </div>
     </div>
   );
 };

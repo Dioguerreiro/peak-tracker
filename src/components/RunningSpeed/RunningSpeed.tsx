@@ -49,7 +49,7 @@ const RunningSpeed: React.FC<PlayerRunningSpeedProps> = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, speed, maxSpeed]);
+  }, [isTimerRunning, speed, maxSpeed, player]);
 
   return (
     <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">

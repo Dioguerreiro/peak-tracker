@@ -24,9 +24,7 @@ ChartJS.register(
 );
 
 const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRunning, player }) => {
-  const { bodyTemperature, setBodyTemperature } = usePlayerStatsContext();
-  
-  const [labels, setLabels] = useState<number[]>([0]);
+  const { bodyTemperature, setBodyTemperature, labels, setLabels } = usePlayerStatsContext();
 
   const options = {
     responsive: true,
@@ -43,7 +41,7 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
   };
 
   const data = {
-    labels,
+    labels: labels[player.number],
     datasets: [
       {
         label: "Body Temperature",
@@ -57,8 +55,9 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
   const simulateBodyTemperature = () => {
     // Generate a random temperature value (you can adjust the range)
     const randomTemperature = Math.random() * 10 + 35;
-    const newLabel = labels.length + 1;
-    setLabels((prevLabels) => [...prevLabels, newLabel]);
+    const newLabel = labels[player.number].length + 1;
+    labels[player.number] = [...labels[player.number], newLabel];
+    setLabels(labels);
     bodyTemperature[player.number] = [...bodyTemperature[player.number], Math.round(randomTemperature)]
     setBodyTemperature(bodyTemperature);
   }
@@ -73,7 +72,7 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, data, bodyTemperature[player.number], labels]);
+  }, [isTimerRunning, data, bodyTemperature, labels, player]);
 
   return (
     <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-full w-full">

@@ -117,6 +117,7 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
     restingHeartRate,
     maxHeartRate,
     currentHeartRateData,
+    player,
   ]);
 
   return (

@@ -24,7 +24,7 @@ const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, distance]);
+  }, [isTimerRunning, distance, player]);
 
   return (
     <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">

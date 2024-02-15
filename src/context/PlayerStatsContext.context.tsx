@@ -52,6 +52,9 @@ export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
   const [bodyTemperature, setBodyTemperature] = useState(
     Object.fromEntries(players.map((player) => [player.number, [27]]))
   );
+  const [labels, setLabels] = useState(
+    Object.fromEntries(players.map((player) => [player.number, [0]]))
+  );
 
   const handleStop = () => {
     setCurrentHeartRate(
@@ -86,6 +89,9 @@ export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
     setBodyTemperature(
       Object.fromEntries(players.map((player) => [player.number, [27]]))
     );
+    setLabels(
+      Object.fromEntries(players.map((player) => [player.number, [0]]))
+    );
   };
 
   const PlayerStatsMemo = useMemo(
@@ -108,6 +114,8 @@ export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
       setMaxSpeed,
       bodyTemperature,
       setBodyTemperature,
+      labels,
+      setLabels,
       handleStop,
     }),
     [
@@ -120,6 +128,7 @@ export const PlayerStatsContextProvider: FC<{ children: ReactNode }> = ({
       speed,
       maxSpeed,
       bodyTemperature,
+      labels
     ]
   );
 

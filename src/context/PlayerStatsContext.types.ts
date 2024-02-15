@@ -75,6 +75,14 @@ export interface IPlayerStatsContext {
       [k: string]: number[];
     }>
   >;
+  labels: {
+    [k: string]: number[];
+  };
+  setLabels: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number[];
+    }>
+  >;
 
   handleStop: () => void;
 }
