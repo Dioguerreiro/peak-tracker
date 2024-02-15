@@ -11,21 +11,30 @@ const PlayersStats: React.FC<PlayerStatsProps> = ({
 }) => {
   return (
     <>
-      {player.number === selectedPlayer && (
-        <>
-          <HeartRateChart
-            isTimerRunning={isTimerRunning}
-            player={player}
-          />
-          <div className="flex flex-col gap-5">
-            <RunningDistanceSimulator isTimerRunning={isTimerRunning} player={player}/>
-            <RunningSpeed isTimerRunning={isTimerRunning} player={player}/>
-          </div>
-          <div className="flex-grow">
-            <PlayerBodyTemperature isTimerRunning={isTimerRunning} player={player}/>
-          </div>
-        </>
-      )}
+      <HeartRateChart
+        isTimerRunning={isTimerRunning}
+        player={player}
+        selectedPlayer={selectedPlayer}
+      />
+      <div className={selectedPlayer === player.number ? 'flex flex-col gap-5' : 'hidden'}>
+        <RunningDistanceSimulator
+          isTimerRunning={isTimerRunning}
+          player={player}
+          selectedPlayer={selectedPlayer}
+        />
+        <RunningSpeed
+          isTimerRunning={isTimerRunning}
+          player={player}
+          selectedPlayer={selectedPlayer}
+        />
+      </div>
+      <div className={selectedPlayer === player.number ? 'flex-grow' : 'hidden'}>
+        <PlayerBodyTemperature
+          isTimerRunning={isTimerRunning}
+          player={player}
+          selectedPlayer={selectedPlayer}
+        />
+      </div>
     </>
   );
 };

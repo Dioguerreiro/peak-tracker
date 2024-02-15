@@ -5,6 +5,7 @@ import { usePlayerStatsContext } from "../../context/PlayerStatsContext.context"
 const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({
   isTimerRunning,
   player,
+  selectedPlayer,
 }) => {
   const { distance, setDistance } = usePlayerStatsContext();
 
@@ -24,13 +25,17 @@ const RunningDistanceSimulator: React.FC<PlayerRunningDistanceProps> = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, distance, player]);
+  }, [isTimerRunning, distance]);
 
   return (
-    <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">
-      <h2 className="text-3xl font-bold">Total Distance</h2>
-      <p className="text-2xl ">{distance[player.number]} m</p>
-    </div>
+    <>
+      {player.number === selectedPlayer && (
+        <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">
+          <h2 className="text-3xl font-bold">Total Distance</h2>
+          <p className="text-2xl ">{distance[player.number]} m</p>
+        </div>
+      )}
+    </>
   );
 };
 

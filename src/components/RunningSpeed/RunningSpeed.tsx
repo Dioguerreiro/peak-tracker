@@ -5,6 +5,7 @@ import { usePlayerStatsContext } from "../../context/PlayerStatsContext.context"
 const RunningSpeed: React.FC<PlayerRunningSpeedProps> = ({
   isTimerRunning,
   player,
+  selectedPlayer,
 }) => {
   const { speed, setSpeed, maxSpeed, setMaxSpeed } = usePlayerStatsContext();
   const acceleration = 0.1; // Base acceleration
@@ -28,14 +29,17 @@ const RunningSpeed: React.FC<PlayerRunningSpeedProps> = ({
 
     // Simulate speed change
     const newSpeed = Math.max(
-      Math.min(speed[player.number] + accelerationOrDeceleration, maxSpeedLimit),
+      Math.min(
+        speed[player.number] + accelerationOrDeceleration,
+        maxSpeedLimit
+      ),
       minSpeedLimit
     );
 
     // Update the speed and maxSpeed
-    speed[player.number] = newSpeed
+    speed[player.number] = newSpeed;
     setSpeed(speed);
-    maxSpeed[player.number] = Math.max(newSpeed, maxSpeed[player.number])
+    maxSpeed[player.number] = Math.max(newSpeed, maxSpeed[player.number]);
     setMaxSpeed(maxSpeed);
   };
 
@@ -49,15 +53,19 @@ const RunningSpeed: React.FC<PlayerRunningSpeedProps> = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [isTimerRunning, speed, maxSpeed, player]);
+  }, [isTimerRunning, speed, maxSpeed]);
 
   return (
-    <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">
-      <h2 className="text-3xl font-bold">Current Speed</h2>
-      <p className="text-2xl ">{speed[player.number].toFixed(2)} km/s</p>
-      <h2 className="text-3xl font-bold">Max Speed</h2>
-      <p className="text-2xl ">{maxSpeed[player.number].toFixed(2)} km/s</p>
-    </div>
+    <>
+      {player.number === selectedPlayer && (
+        <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-fit">
+          <h2 className="text-3xl font-bold">Current Speed</h2>
+          <p className="text-2xl ">{speed[player.number].toFixed(2)} km/s</p>
+          <h2 className="text-3xl font-bold">Max Speed</h2>
+          <p className="text-2xl ">{maxSpeed[player.number].toFixed(2)} km/s</p>
+        </div>
+      )}
+    </>
   );
 };
 

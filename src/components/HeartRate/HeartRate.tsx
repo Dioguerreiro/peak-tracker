@@ -5,6 +5,7 @@ import { usePlayerStatsContext } from "../../context/PlayerStatsContext.context"
 const HeartRateChart: React.FC<HeartRateChartProps> = ({
   isTimerRunning,
   player,
+  selectedPlayer,
 }) => {
   const maxHeartRate = 200;
   const restingHeartRate = 70;
@@ -12,15 +13,15 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
   // Heart rate controllers
   const {
     currentHeartRate,
-      setCurrentHeartRate,
-      currentHeartRateZone,
-      setCurrentHeartRateZone,
-      currentHeartRateData,
-      setCurrentHeartRateData,
-      currentAvgHeartRate,
-      setCurrentAvgHeartRate,
-      zoneTimers,
-      setZoneTimers,
+    setCurrentHeartRate,
+    currentHeartRateZone,
+    setCurrentHeartRateZone,
+    currentHeartRateData,
+    setCurrentHeartRateData,
+    currentAvgHeartRate,
+    setCurrentAvgHeartRate,
+    zoneTimers,
+    setZoneTimers,
   } = usePlayerStatsContext();
 
   const setZoneColor = (newHeartRate: number) => {
@@ -60,7 +61,9 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
       const newHeartRate = Math.round(
         Math.min(
           Math.max(
-            currentHeartRate[player.number] + randomValue * variation - variation / 2,
+            currentHeartRate[player.number] +
+              randomValue * variation -
+              variation / 2,
             restingHeartRate
           ),
           maxHeartRate
@@ -69,12 +72,15 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
 
       // Update the heart rate and set the zone color
       setZoneColor(newHeartRate);
-      
+
       currentHeartRate[player.number] = newHeartRate;
       setCurrentHeartRate(currentHeartRate);
 
       // Update heartRateData using the setHeartRateData function
-      currentHeartRateData[player.number] = [...currentHeartRateData[player.number], Math.round(newHeartRate)];
+      currentHeartRateData[player.number] = [
+        ...currentHeartRateData[player.number],
+        Math.round(newHeartRate),
+      ];
       setCurrentHeartRateData(currentHeartRateData);
       calculateHeartRateAvg();
     } catch (error) {
@@ -86,8 +92,13 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
     if (currentHeartRateData[player.number].length <= 0) {
       setCurrentAvgHeartRate(currentHeartRate);
     } else {
-      const sum = currentHeartRateData[player.number].reduce((acc, num) => acc + num, 0);
-      currentAvgHeartRate[player.number] = Math.round(sum / currentHeartRateData[player.number].length);
+      const sum = currentHeartRateData[player.number].reduce(
+        (acc, num) => acc + num,
+        0
+      );
+      currentAvgHeartRate[player.number] = Math.round(
+        sum / currentHeartRateData[player.number].length
+      );
       setCurrentAvgHeartRate(currentAvgHeartRate);
     }
   };
@@ -117,150 +128,177 @@ const HeartRateChart: React.FC<HeartRateChartProps> = ({
     restingHeartRate,
     maxHeartRate,
     currentHeartRateData,
-    player,
   ]);
 
   return (
-    <div className="bg-white rounded-xl p-10 flex flex-col gap-7">
-      <h1 className="text-3xl font-bold">Heart Rate</h1>
-      <div className="flex flex-col gap-2">
-        <div className="flex rounded overflow-hidden w-fit">
-          <div
-            className={`${
-              currentHeartRateZone[player.number] === "blue"
-                ? "bg-spc_blue-50"
-                : "bg-spc_blue-100"
-            } py-1 px-2`}
-          >
-            <div
-              className={`flex gap-1 items-center ${
-                currentHeartRateZone[player.number] !== "blue" ? "invisible" : ""
-              }`}
-            >
-              <span className="uppercase text-base font-semibold">zone 1</span>
+    <>
+      {player.number === selectedPlayer && (
+        <div className="bg-white rounded-xl p-10 flex flex-col gap-7">
+          <h1 className="text-3xl font-bold">Heart Rate</h1>
+          <div className="flex flex-col gap-2">
+            <div className="flex rounded overflow-hidden w-fit">
+              <div
+                className={`${
+                  currentHeartRateZone[player.number] === "blue"
+                    ? "bg-spc_blue-50"
+                    : "bg-spc_blue-100"
+                } py-1 px-2`}
+              >
+                <div
+                  className={`flex gap-1 items-center ${
+                    currentHeartRateZone[player.number] !== "blue"
+                      ? "invisible"
+                      : ""
+                  }`}
+                >
+                  <span className="uppercase text-base font-semibold">
+                    zone 1
+                  </span>
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentHeartRateZone[player.number] === "teal"
+                    ? "bg-spc_teal-50"
+                    : "bg-spc_teal-100"
+                } py-1 px-2`}
+              >
+                <div
+                  className={`flex gap-1 items-center ${
+                    currentHeartRateZone[player.number] !== "teal"
+                      ? "invisible"
+                      : ""
+                  }`}
+                >
+                  <span className="uppercase text-base font-semibold">
+                    zone 2
+                  </span>
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentHeartRateZone[player.number] === "green"
+                    ? "bg-spc_green-50"
+                    : "bg-spc_green-100"
+                } py-1 px-2`}
+              >
+                <div
+                  className={`flex gap-1 items-center ${
+                    currentHeartRateZone[player.number] !== "green"
+                      ? "invisible"
+                      : ""
+                  }`}
+                >
+                  <span className="uppercase text-base font-semibold">
+                    zone 3
+                  </span>
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentHeartRateZone[player.number] === "orange"
+                    ? "bg-spc_orange-50"
+                    : "bg-spc_orange-100"
+                } py-1 px-2`}
+              >
+                <div
+                  className={`flex gap-1 items-center ${
+                    currentHeartRateZone[player.number] !== "orange"
+                      ? "invisible"
+                      : ""
+                  }`}
+                >
+                  <span className="uppercase text-base font-semibold">
+                    zone 4
+                  </span>
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentHeartRateZone[player.number] === "red"
+                    ? "bg-spc_red-50"
+                    : "bg-spc_red-100"
+                } py-1 px-2`}
+              >
+                <div
+                  className={`flex gap-1 items-center ${
+                    currentHeartRateZone[player.number] !== "red"
+                      ? "invisible"
+                      : ""
+                  }`}
+                >
+                  <span className="uppercase text-base font-semibold">
+                    zone 5
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="text-neutral-500 text-base font-semibold">
+                Current heart rate
+              </h2>
+              <h2 className="text-base font-semibold">
+                {currentHeartRate[player.number] === 0
+                  ? "-"
+                  : currentHeartRate[player.number]}
+              </h2>
+            </div>
+            <div className="flex justify-between pt-2 border-t border-t-neutral-200">
+              <h2 className="text-neutral-500 text-base font-semibold">
+                Average heart rate
+              </h2>
+              <h2 className="text-base font-semibold">
+                {currentAvgHeartRate[player.number] === 0
+                  ? "-"
+                  : currentAvgHeartRate[player.number]}
+              </h2>
             </div>
           </div>
-          <div
-            className={`${
-              currentHeartRateZone[player.number] === "teal"
-                ? "bg-spc_teal-50"
-                : "bg-spc_teal-100"
-            } py-1 px-2`}
-          >
-            <div
-              className={`flex gap-1 items-center ${
-                currentHeartRateZone[player.number] !== "teal" ? "invisible" : ""
-              }`}
-            >
-              <span className="uppercase text-base font-semibold">zone 2</span>
+          <div className="flex flex-col">
+            <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-spc_blue-50">Zone 1</span>
+                <div className="w-[9px] h-[9px] bg-spc_blue-50 rounded-full"></div>
+                <span>{formatTime(zoneTimers[player.number][0])}</span>
+              </div>
+              <span>&#60;135BPM</span>
             </div>
-          </div>
-          <div
-            className={`${
-              currentHeartRateZone[player.number] === "green"
-                ? "bg-spc_green-50"
-                : "bg-spc_green-100"
-            } py-1 px-2`}
-          >
-            <div
-              className={`flex gap-1 items-center ${
-                currentHeartRateZone[player.number] !== "green" ? "invisible" : ""
-              }`}
-            >
-              <span className="uppercase text-base font-semibold">zone 3</span>
+            <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-spc_teal-50">Zone 2</span>
+                <div className="w-[9px] h-[9px] bg-spc_teal-50 rounded-full"></div>
+                <span>{formatTime(zoneTimers[player.number][1])}</span>
+              </div>
+              <span>136-149BPM</span>
             </div>
-          </div>
-          <div
-            className={`${
-              currentHeartRateZone[player.number] === "orange"
-                ? "bg-spc_orange-50"
-                : "bg-spc_orange-100"
-            } py-1 px-2`}
-          >
-            <div
-              className={`flex gap-1 items-center ${
-                currentHeartRateZone[player.number] !== "orange" ? "invisible" : ""
-              }`}
-            >
-              <span className="uppercase text-base font-semibold">zone 4</span>
+            <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-spc_green-50">Zone 3</span>
+                <div className="w-[9px] h-[9px] bg-spc_green-50 rounded-full"></div>
+                <span>{formatTime(zoneTimers[player.number][2])}</span>
+              </div>
+              <span>150-163BPM</span>
             </div>
-          </div>
-          <div
-            className={`${
-              currentHeartRateZone[player.number] === "red"
-                ? "bg-spc_red-50"
-                : "bg-spc_red-100"
-            } py-1 px-2`}
-          >
-            <div
-              className={`flex gap-1 items-center ${
-                currentHeartRateZone[player.number] !== "red" ? "invisible" : ""
-              }`}
-            >
-              <span className="uppercase text-base font-semibold">zone 5</span>
+            <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-spc_orange-50">Zone 4</span>
+                <div className="w-[9px] h-[9px] bg-spc_orange-50 rounded-full"></div>
+                <span>{formatTime(zoneTimers[player.number][3])}</span>
+              </div>
+              <span>164-176BPM</span>
+            </div>
+            <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-spc_red-50">Zone 5</span>
+                <div className="w-[9px] h-[9px] bg-spc_red-50 rounded-full"></div>
+                <span>{formatTime(zoneTimers[player.number][4])}</span>
+              </div>
+              <span>177+BPM</span>
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
-          <h2 className="text-neutral-500 text-base font-semibold">
-            Current heart rate
-          </h2>
-          <h2 className="text-base font-semibold">
-            {currentHeartRate[player.number] === 0 ? "-" : currentHeartRate[player.number]}
-          </h2>
-        </div>
-        <div className="flex justify-between pt-2 border-t border-t-neutral-200">
-          <h2 className="text-neutral-500 text-base font-semibold">
-            Average heart rate
-          </h2>
-          <h2 className="text-base font-semibold">
-            {currentAvgHeartRate[player.number] === 0 ? "-" : currentAvgHeartRate[player.number]}
-          </h2>
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-spc_blue-50">Zone 1</span>
-            <div className="w-[9px] h-[9px] bg-spc_blue-50 rounded-full"></div>
-            <span>{formatTime(zoneTimers[player.number][0])}</span>
-          </div>
-          <span>&#60;135BPM</span>
-        </div>
-        <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-spc_teal-50">Zone 2</span>
-            <div className="w-[9px] h-[9px] bg-spc_teal-50 rounded-full"></div>
-            <span>{formatTime(zoneTimers[player.number][1])}</span>
-          </div>
-          <span>136-149BPM</span>
-        </div>
-        <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-spc_green-50">Zone 3</span>
-            <div className="w-[9px] h-[9px] bg-spc_green-50 rounded-full"></div>
-            <span>{formatTime(zoneTimers[player.number][2])}</span>
-          </div>
-          <span>150-163BPM</span>
-        </div>
-        <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-spc_orange-50">Zone 4</span>
-            <div className="w-[9px] h-[9px] bg-spc_orange-50 rounded-full"></div>
-            <span>{formatTime(zoneTimers[player.number][3])}</span>
-          </div>
-          <span>164-176BPM</span>
-        </div>
-        <div className="py-[5px] flex border-b border-neutral-200 justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-spc_red-50">Zone 5</span>
-            <div className="w-[9px] h-[9px] bg-spc_red-50 rounded-full"></div>
-            <span>{formatTime(zoneTimers[player.number][4])}</span>
-          </div>
-          <span>177+BPM</span>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -23,8 +23,13 @@ ChartJS.register(
   Legend
 );
 
-const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRunning, player }) => {
-  const { bodyTemperature, setBodyTemperature, labels, setLabels } = usePlayerStatsContext();
+const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({
+  isTimerRunning,
+  player,
+  selectedPlayer,
+}) => {
+  const { bodyTemperature, setBodyTemperature, labels, setLabels } =
+    usePlayerStatsContext();
 
   const options = {
     responsive: true,
@@ -58,9 +63,12 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
     const newLabel = labels[player.number].length + 1;
     labels[player.number] = [...labels[player.number], newLabel];
     setLabels(labels);
-    bodyTemperature[player.number] = [...bodyTemperature[player.number], Math.round(randomTemperature)]
+    bodyTemperature[player.number] = [
+      ...bodyTemperature[player.number],
+      Math.round(randomTemperature),
+    ];
     setBodyTemperature(bodyTemperature);
-  }
+  };
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -75,10 +83,14 @@ const PlayerBodyTemperature: React.FC<PlayerBodyTemperatureProps> = ({ isTimerRu
   }, [isTimerRunning, data, bodyTemperature, labels, player]);
 
   return (
-    <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-full w-full">
-      <h2 className="text-3xl font-bold">Body Temperature</h2>
-      <Line options={options} data={data} />
-    </div>
+    <>
+      {player.number === selectedPlayer && (
+        <div className="bg-white rounded-xl p-10 flex flex-col gap-7 h-full w-full">
+          <h2 className="text-3xl font-bold">Body Temperature</h2>
+          <Line options={options} data={data} />
+        </div>
+      )}
+    </>
   );
 };
 
