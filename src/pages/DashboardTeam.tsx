@@ -24,12 +24,16 @@ const DashboardTeam = () => {
 
   // Function to filter players based on position zone
   const filterPlayersByZone = (positionZone: string) => {
-    console.log(teamPlayers)
     return teamPlayers
       ? teamPlayers.filter(
           (player) => player.positionFieldZone === positionZone
         )
       : [];
+  };
+
+  const handlePlayerAdded = (player: PlayerProps) => {
+    // Update the list of team players with the newly added player
+    setTeamPlayers((prevPlayers) => prevPlayers ? [...prevPlayers, player] : [player]);
   };
 
   return (
@@ -41,6 +45,7 @@ const DashboardTeam = () => {
             <PlayerCardList
               players={filterPlayersByZone(zone) ?? []}
               zone={zone}
+              onPlayerAdded={handlePlayerAdded}
             />
           </div>
         ))}

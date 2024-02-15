@@ -22,11 +22,13 @@ import PlayerProps, {
 interface DashboardAddNewPlayerProps {
   open: boolean;
   onClose: () => void;
+  onPlayerAdded: (player: PlayerProps) => void;
 }
 
 const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
   open,
   onClose,
+  onPlayerAdded,
 }) => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [playerName, setPlayerName] = useState<string>("");
@@ -111,6 +113,7 @@ const DashboardAddNewPlayer: React.FC<DashboardAddNewPlayerProps> = ({
     } else {
       // Player added successfully
       console.log("Player added successfully!");
+      onPlayerAdded(player);
 
       // Reset the form
       setPlayerName("");

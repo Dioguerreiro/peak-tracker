@@ -5,7 +5,7 @@ import { faPlusCircle } from "@fortawesome/pro-solid-svg-icons";
 import { useState } from "react";
 import DashboardAddNewPlayer from "../DashboardAddNewPlayer/DashboardAddNewPlayer";
 
-const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone }) => {
+const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone, onPlayerAdded }) => {
   const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
 
   const openAddPlayerModal = () => {
@@ -52,6 +52,7 @@ const PlayerCardList: React.FC<PlayerCardListProps> = ({ players, zone }) => {
       <DashboardAddNewPlayer
         open={isAddPlayerModalOpen}
         onClose={closeAddPlayerModal}
+        onPlayerAdded={onPlayerAdded}
       />
     </div>
   );
